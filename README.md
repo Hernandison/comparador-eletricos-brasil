@@ -1,10 +1,13 @@
 # ⚡ Elétricos no Brasil · Comparador 2026
 
 Ferramenta gratuita para ajudar as pessoas a **escolher seu carro elétrico** no Brasil.
-Compara **48 versões** de 30+ modelos com preço, autonomia (ciclo Inmetro), potência,
-recarga, porta-malas, **avaliação de suspensão/conforto**, score de custo-benefício,
-gráfico de mercado, comparador lado a lado (até 4 carros), ranking e **simulador de economia**
-elétrico × combustível.
+Compara **~80 versões** (todos os trims à venda) de 40+ modelos com preço, autonomia
+(ciclo Inmetro), potência, recarga, porta-malas, **avaliação de suspensão/conforto**,
+**Score Geral por carro** + score de custo-benefício, gráfico de mercado, comparador
+lado a lado (até 4 carros), ranking e **simulador de economia** elétrico × combustível.
+
+> **Score Geral (0–100)** — selo colorido em cada card: pondera autonomia (24%),
+> conforto/suspensão (24%), custo-benefício (22%), recarga rápida (16%) e potência (14%).
 
 > Site 100% estático (HTML + CSS + JavaScript puro, **sem framework**). Roda abrindo o
 > arquivo no navegador e hospeda de graça no Vercel, Netlify, GitHub Pages, etc.

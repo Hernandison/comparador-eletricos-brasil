@@ -177,6 +177,15 @@ select{background:var(--painel);color:var(--texto);border:1px solid var(--linha)
 .addbtn{flex:none;font-size:12px;font-weight:700;padding:7px 12px;border-radius:9px;border:1px solid var(--linha);color:var(--texto2)}
 .addbtn.in{border-color:var(--carga);color:var(--carga);background:var(--carga-dim)}
 .note{font-size:11px;color:var(--texto3);font-style:italic}
+/* selo de Score Geral no card */
+.price-row{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.scorebadge{flex:none;text-align:center;border-radius:12px;padding:5px 11px 6px;line-height:1.02}
+.scorebadge b{font-family:var(--mono);font-size:18px;font-weight:700;display:block}
+.scorebadge span{font-size:8px;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+.scorebadge.t-hi{background:var(--status-dim);color:var(--status)}
+.scorebadge.t-mid{background:var(--carga-dim);color:var(--carga)}
+.scorebadge.t-ok{background:var(--alerta-dim);color:var(--alerta)}
+.scorebadge.t-lo{background:#eef1f6;color:var(--texto2)}
 
 /* ---------- comparador ---------- */
 .cmp-empty{border:1px dashed var(--linha);border-radius:var(--r);padding:26px 18px;text-align:center;color:var(--texto2);font-size:14px}
@@ -231,7 +240,11 @@ td .win{font-size:9px;vertical-align:2px;margin-left:3px}
 .prose .mark-warn{color:var(--alerta)} .prose .mark-ok{color:var(--status)} .prose .mark-c{color:var(--carga)}
 .srcs{margin-top:22px;border-top:1px solid var(--linha);padding-top:12px;font-size:11.5px;color:var(--texto3);font-family:var(--mono);line-height:1.8}
 
-footer{margin-top:30px;border-top:1px solid var(--linha);padding:18px 0 30px;font-size:11.5px;color:var(--texto3)}
+footer{margin-top:30px;border-top:1px solid var(--linha);padding:18px 0 30px;font-size:11.5px;color:var(--texto3);line-height:1.7}
+.foot-dev{font-size:13px;color:var(--texto);font-weight:600;margin-bottom:2px}
+.foot-dev b{color:var(--carga);font-weight:800}
+footer a{color:var(--carga);text-decoration:none;font-weight:600}
+footer a:hover{text-decoration:underline}
 
 /* barra flutuante do comparador */
 .floatbar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%) translateY(80px);
@@ -362,7 +375,7 @@ footer{margin-top:30px;border-top:1px solid var(--linha);padding:18px 0 30px;fon
       <h3>Quem escapa: produção nacional</h3>
       <p><strong class="mark-ok">BYD (Camaçari-BA)</strong> já produz o Dolphin Mini no país; o <strong class="mark-ok">Chevrolet Spark EUV</strong> é montado no Brasil; a GWM opera em Iracemápolis-SP. <strong class="mark-c">Geely</strong> anunciou produção do EX2 na fábrica da Renault em São José dos Pinhais-PR e a <strong class="mark-c">Leapmotor</strong> (Stellantis) confirmou nacionalização do B10 — quando isso se concretizar, esses modelos tendem a segurar ou baixar preço enquanto os 100% importados sobem. Para kits CKD/SKD montados aqui, a alíquota cheia só chega em jan/2027.</p>
       <h3>Como ler este dashboard</h3>
-      <p>Preços são de tabela ("a partir de"), coletados em julho/2026 — promoções mensais (como as da BYD) mudam rápido. A autonomia usa o <strong>ciclo Inmetro (PBEV)</strong> quando disponível; onde só há número divulgado pela marca (ciclos CLTC/WLTP, mais otimistas), aplicamos um <strong>ajuste de −22%</strong> para estimar o equivalente Inmetro e manter a comparação justa — esses valores aparecem com "≈/estim.". O score de custo-benefício pondera km por R$ 1.000 (45%), potência por R$ 1.000 (20%), autonomia absoluta (20%) e velocidade de recarga DC (15%), normalizados entre os modelos listados.</p>
+      <p>Preços são de tabela ("a partir de"), coletados em julho/2026 — promoções mensais (como as da BYD) mudam rápido. A autonomia usa o <strong>ciclo Inmetro (PBEV)</strong> quando disponível; onde só há número divulgado pela marca (ciclos CLTC/WLTP, mais otimistas), aplicamos um <strong>ajuste de −22%</strong> para estimar o equivalente Inmetro e manter a comparação justa — esses valores aparecem com "≈/estim.". O <strong>score de custo-benefício</strong> pondera km por R$ 1.000 (45%), potência por R$ 1.000 (20%), autonomia absoluta (20%) e velocidade de recarga DC (15%), normalizados entre os modelos listados. Já o <strong class="mark-c">Score Geral</strong> (o selo colorido em cada card, 0–100) dá uma leitura mais completa do carro, ponderando autonomia (24%), conforto/suspensão (24%), custo-benefício (22%), recarga rápida (16%) e potência (14%).</p>
       <h3>Como lemos a suspensão (nota de conforto/rodagem 0–5 ★)</h3>
       <p>Cada modelo traz a arquitetura real de suspensão <strong>dianteira / traseira</strong> e uma nota de conforto de 0 a 5. A lógica: eixo traseiro <strong class="mark-c">independente (multibraços)</strong> filtra melhor buracos e mantém as rodas alinhadas em curva, tendendo a nota mais alta; <strong class="mark-warn">barra/eixo de torção</strong> (semi-independente) é mais simples e comum nos urbanos de entrada. A nota também considera o acerto conhecido de cada carro e o segmento. Um caso ilustrativo: o novo <strong>MG4 Urban</strong> troca o multibraços do MG4 tradicional por <strong>eixo de torção</strong> para liberar espaço e porta-malas (477 L) — por isso fica em 3,4, enquanto o MG4 "cheio" marca 4,2. <em>É uma orientação comparativa, não um teste instrumentado — faça o test-drive.</em></p>
       <h3>Dicas rápidas de comprador</h3>
@@ -382,7 +395,10 @@ footer{margin-top:30px;border-top:1px solid var(--linha);padding:18px 0 30px;fon
 </div>
 
 <footer>
-  <div class="wrap">Comparador de elétricos · Brasil · dados coletados em 15/07/2026 · uso pessoal — não substitui cotação oficial das montadoras.</div>
+  <div class="wrap">
+    <div class="foot-dev">Desenvolvido por <b>Hernandison</b> · <a href="https://github.com/Hernandison/comparador-eletricos-brasil" target="_blank" rel="noopener">github.com/Hernandison</a></div>
+    <div>Comparador de elétricos · Brasil · dados jul/2026 · uso pessoal — não substitui cotação oficial das montadoras.</div>
+  </div>
 </footer>
 </div><!-- /shell -->
 <script src="cars.js"></script>
@@ -400,6 +416,9 @@ const [kmrsL,kmrsH]=mm('kmrs'),[cvrsL,cvrsH]=mm('cvrs'),[autL,autH]=mm('kmA'),[d
 const nrm=(v,l,h)=>Math.max(0,Math.min(1,(v-l)/(h-l)));
 CARS.forEach(c=>{
   c.score=Math.round(100*(0.45*nrm(c.kmrs,kmrsL,kmrsH)+0.20*nrm(c.cvrs,cvrsL,cvrsH)+0.20*nrm(c.kmA,autL,autH)+0.15*nrm(c.dc??28,dcL,dcH)));
+  /* Score Geral (0–100): visão completa do carro, ponderando custo-benefício,
+     autonomia, potência, recarga rápida e conforto/suspensão */
+  c.overall=Math.round(100*(0.22*nrm(c.kmrs,kmrsL,kmrsH)+0.24*nrm(c.kmA,autL,autH)+0.14*nrm(c.cv,60,650)+0.16*nrm(c.dc??28,dcL,dcH)+0.24*nrm(c.susp,2.5,4.5)));
 });
 const scoreH=Math.max(...CARS.map(c=>c.score));
 
@@ -409,6 +428,7 @@ const name=c=>c.b+' '+c.m+(c.v?' '+c.v:'');
 const cyc=c=>c.ci==='i'?'':'≈';
 const kmLbl=c=>c.ci==='i'?'Inmetro':'estim.';
 const stars=v=>{if(v==null)return'—';const f=Math.round(v);return'★'.repeat(f)+'☆'.repeat(5-f);};
+const tier=v=>v>=75?'t-hi':v>=60?'t-mid':v>=45?'t-ok':'t-lo';
 
 /* =============== estado =============== */
 let sel=[];              // ids no comparador (máx 4)
@@ -466,14 +486,14 @@ $('#fbGo').addEventListener('click',()=>showPane('comparar'));
 
 /* =============== HERO scatter (SVG) =============== */
 const SW=720,SH=460,PAD={l:58,r:16,t:16,b:44};
-const X=p=>PAD.l+ (Math.min(p,510000)-90000)/(510000-90000)*(SW-PAD.l-PAD.r);
+const X=p=>PAD.l+ (Math.min(p,700000)-90000)/(700000-90000)*(SW-PAD.l-PAD.r);
 const Y=k=>SH-PAD.b-(Math.min(k,600)-150)/(600-150)*(SH-PAD.t-PAD.b);
 function drawScatter(){
   const s=$('#scatter');const NS='http://www.w3.org/2000/svg';
   const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
   s.innerHTML='';
   // grid + eixos
-  [100,200,300,400,500].forEach(v=>{
+  [150,300,450,600].forEach(v=>{
     const x=X(v*1000);
     s.appendChild(el('line',{x1:x,y1:PAD.t,x2:x,y2:SH-PAD.b,stroke:'#edf2f7','stroke-width':1}));
     const t=el('text',{x:x,y:SH-PAD.b+18,fill:'#a0aec0','font-size':11,'text-anchor':'middle','font-family':'IBM Plex Mono,monospace'});
@@ -545,7 +565,10 @@ function renderCards(){
          <div class="model">${c.m}${c.v?`<small>${c.v}</small>`:''}</div></div>
        <span class="origin ${c.o==='N'?'nac':'imp'}">${c.o==='N'?'NACIONAL':'IMPORTADO'}</span>
      </div>
-     <div class="price">${fmtR(c.p)}<small>a partir de</small></div>
+     <div class="price-row">
+       <div class="price">${fmtR(c.p)}<small>a partir de</small></div>
+       <div class="scorebadge ${tier(c.overall)}" title="Score Geral (autonomia, custo-benefício, potência, recarga e conforto)"><b>${c.overall}</b><span>score</span></div>
+     </div>
      <div class="specs">
        <div class="spec"><div class="v">${cyc(c)}${fmtK(c.kmA)}</div><div class="k">km ${kmLbl(c)}</div></div>
        <div class="spec"><div class="v">${c.cv}</div><div class="k">cv</div></div>
@@ -587,6 +610,7 @@ function renderCmp(){
     ['Suspensão traseira',null,c=>c.sr||'—',null],
     ['Conforto / rodagem',c=>c.susp,c=>c.susp?stars(c.susp)+' '+c.susp.toFixed(1):'—','max'],
     ['Origem',null,c=>c.o==='N'?'🇧🇷 Nacional':'Importado',null],
+    ['Score Geral',c=>c.overall,c=>c.overall+' / 100','max'],
     ['Score custo-benefício',c=>c.score,c=>c.score+' / 100','max'],
   ];
   let html=`<div class="cmp-sel">${cs.map(c=>`<span class="cmp-chip">${name(c)}<button aria-label="remover" data-rm="${c.id}">✕</button></span>`).join('')}</div>`;
@@ -621,7 +645,7 @@ function drawRadar(cs){
     ['Autonomia',c=>nrm(c.kmA,autL,autH)],
     ['Potência',c=>nrm(c.cv,60,520)],
     ['Recarga DC',c=>nrm(c.dc??28,dcL,dcH)],
-    ['Preço acessível',c=>1-nrm(c.p,90000,510000)],
+    ['Preço acessível',c=>1-nrm(c.p,90000,700000)],
     ['km/R$1.000',c=>nrm(c.kmrs,kmrsL,kmrsH)],
     ['Conforto susp.',c=>nrm(c.susp??3,2.5,4.5)],
   ];
@@ -644,12 +668,13 @@ function drawRadar(cs){
 
 /* =============== ranking =============== */
 let rankMetric='score';
-const RM=[['score','Score CB'],['kmrs','km por R$ 1.000'],['cvrs','cv por R$ 1.000'],['km','Autonomia'],['susp','Conforto susp.'],['preco','Menor preço']];
+const RM=[['overall','Score Geral'],['score','Score CB'],['kmrs','km por R$ 1.000'],['cvrs','cv por R$ 1.000'],['km','Autonomia'],['susp','Conforto susp.'],['preco','Menor preço']];
 function renderRank(){
   $('#rankTools').innerHTML=RM.map(([k,l])=>`<button class="chip" aria-pressed="${rankMetric===k}" data-rk="${k}">${l}</button>`).join('');
   document.querySelectorAll('[data-rk]').forEach(b=>b.addEventListener('click',()=>{rankMetric=b.dataset.rk;renderRank();}));
   let list=[...CARS];
   let get,fmt;
+  if(rankMetric==='overall'){get=c=>c.overall;fmt=v=>v+' /100';}
   if(rankMetric==='score'){get=c=>c.score;fmt=v=>v+' /100';}
   if(rankMetric==='kmrs'){get=c=>c.kmrs;fmt=v=>v.toFixed(2);}
   if(rankMetric==='cvrs'){get=c=>c.cvrs;fmt=v=>v.toFixed(2);}

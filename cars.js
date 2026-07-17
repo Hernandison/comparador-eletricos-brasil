@@ -6,55 +6,108 @@
    km autonomia · ci ciclo (i=Inmetro / d=divulgado) · cv potência
    s 0-100(s) · dc recarga DC(kW) · mala(L) · o origem (N/I)
    cat categoria · sf/sr suspensão diant/tras · susp nota 0-5
-   tags[] rótulos · nota observação                              
+   tags[] rótulos · nota observação
+   Cobertura: todas as versões/trims à venda no Brasil (jul/2026),
+   pesquisadas por marca. Modelos sem venda confirmada foram omitidos.
    ============================================================ */
 var CARS=[
-{b:'Renault',m:'Kwid E-Tech',v:'',p:99990,kwh:26.8,km:180,ci:'i',cv:65,s:null,dc:30,mala:290,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:2.8,tags:['Rede Renault ampla'],nota:'Mais barato do país'},
-{b:'BYD',m:'Dolphin Mini',v:'GL',p:109990,kwh:30,km:224,ci:'i',cv:75,s:null,dc:30,mala:230,o:'N',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.0,tags:['Bateria Blade LFP','Promo julho (tabela R$ 118.990)']},
-{b:'BYD',m:'Dolphin Mini',v:'GS',p:119990,kwh:38,km:280,ci:'i',cv:75,s:null,dc:30,mala:230,o:'N',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.0,tags:['Bateria Blade LFP','Multimídia giratória']},
-{b:'JAC',m:'E-JS1',v:'',p:119900,kwh:30.2,km:181,ci:'i',cv:62,s:null,dc:null,mala:null,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:2.7,tags:['Veterano do segmento']},
-{b:'Caoa Chery',m:'iCar',v:'',p:119990,kwh:26,km:197,ci:'i',cv:61,s:null,dc:null,mala:null,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:2.6,tags:['Micro urbano ágil']},
-{b:'Geely',m:'EX2',v:'Pro',p:123800,kwh:39.4,km:289,ci:'i',cv:116,s:10.2,dc:null,mala:375,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.2,tags:['Tração traseira','Frunk 70 L','Garantia 6a/150 mil km'],nota:'Produção nacional anunciada (Renault-PR)'},
-{b:'Geely',m:'EX2',v:'Max',p:136800,kwh:39.4,km:289,ci:'i',cv:116,s:10.2,dc:null,mala:375,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.2,tags:['Câmera 540°','Carregador por indução','Rodas liga 16"']},
-{b:'Neta',m:'Aya',v:'',p:124900,kwh:40,km:263,ci:'d',cv:95,s:null,dc:null,mala:null,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.0,tags:[]},
-{b:'MG',m:'MG4 Urban',v:'Comfort 43',p:129990,kwh:43,km:299,ci:'i',cv:150,s:9.6,dc:87,mala:477,o:'I',cat:'Hatch',sf:'McPherson',sr:'Eixo de torção',susp:3.4,tags:['Bateria LFP 43 kWh','7 airbags','Central 12,8"','15 funções ADAS'],nota:'Porta de entrada da MG · rear por eixo de torção (mais simples que o MG4 multibraços)'},
-{b:'MG',m:'MG4 Urban',v:'Luxury 43',p:139990,kwh:43,km:299,ci:'i',cv:150,s:9.6,dc:87,mala:477,o:'I',cat:'Hatch',sf:'McPherson',sr:'Eixo de torção',susp:3.4,tags:['Bateria LFP 43 kWh','Acabamento Luxury','Câmera de ré','ADAS completo']},
-{b:'MG',m:'MG4 Urban',v:'Luxury 54',p:149990,kwh:54,km:358,ci:'i',cv:160,s:9.5,dc:87,mala:477,o:'I',cat:'Hatch',sf:'McPherson',sr:'Eixo de torção',susp:3.4,tags:['Bateria 54 kWh','358 km Inmetro','160 cv','Topo de linha'],nota:'Maior autonomia da linha Urban'},
-{b:'GAC',m:'Aion UT',v:'Premium',p:139990,kwh:44.1,km:253,ci:'i',cv:204,s:8.6,dc:87,mala:340,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.3,tags:['Wallbox grátis','Seguro 1º ano','Câmera 360°','V2L']},
-{b:'Chevrolet',m:'Spark EUV',v:'',p:144990,kwh:42,km:258,ci:'i',cv:102,s:null,dc:null,mala:355,o:'N',cat:'SUV compacto',sf:'McPherson',sr:'Barra de torção',susp:3.2,tags:['6 airbags','ACC + câmera 360°','Rede Chevrolet']},
-{b:'BYD',m:'Dolphin',v:'GS',p:149990,kwh:44.9,km:291,ci:'i',cv:95,s:10.9,dc:60,mala:345,o:'N',cat:'Hatch',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['Faróis LED','Tela giratória']},
-{b:'GWM',m:'Ora 03',v:'Skin',p:150000,kwh:48,km:315,ci:'i',cv:171,s:null,dc:null,mala:228,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['Design retrô','Foco em segurança']},
-{b:'BYD',m:'Dolphin',v:'SE',p:159990,kwh:45.1,km:272,ci:'i',cv:177,s:8.0,dc:80,mala:345,o:'N',cat:'Hatch',sf:'McPherson',sr:'Multibraços',susp:3.7,tags:['ADAS nível 2','Facelift 2026','Estepe']},
-{b:'GAC',m:'Aion UT',v:'Elite',p:159990,kwh:60,km:310,ci:'i',cv:204,s:7.3,dc:87,mala:340,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['ADAS nível 2 (11 funções)','V2L','Wallbox + seguro 1º ano']},
-{b:'MG',m:'MG4',v:'',p:169990,kwh:51,km:364,ci:'d',cv:204,s:7.7,dc:88,mala:363,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços (5 braços)',susp:4.2,tags:['Tração traseira','Rear multibraços — dirigibilidade premiada']},
-{b:'GAC',m:'Aion ES',v:'',p:170990,kwh:55,km:314,ci:'d',cv:136,s:null,dc:null,mala:null,o:'I',cat:'Sedã',sf:'McPherson',sr:'Barra de torção',susp:3.1,tags:['Foco em frotas/apps']},
-{b:'Leapmotor',m:'B10',v:'',p:172990,kwh:56.2,km:288,ci:'i',cv:218,s:7.3,dc:168,mala:430,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['Grupo Stellantis','Plataforma LEAP 3.5','ADAS completo','50% em 15 min'],nota:'Nacionalização anunciada; lançou a R$ 182.990 (PcD R$ 161.390)'},
-{b:'GAC',m:'Aion Y',v:'',p:175990,kwh:63,km:318,ci:'d',cv:204,s:null,dc:null,mala:null,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['Bateria LFP','Espaço interno']},
-{b:'BYD',m:'Dolphin',v:'Plus',p:184800,kwh:60.5,km:427,ci:'i',cv:204,s:7.0,dc:80,mala:345,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['Teto solar','Bancos elétricos','Rodas 17"']},
-{b:'BYD',m:'Yuan Plus',v:'',p:189800,kwh:60.5,km:380,ci:'d',cv:204,s:7.3,dc:80,mala:440,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.7,tags:['Interior "academia"']},
-{b:'MG',m:'MG4',v:'Long Range',p:189990,kwh:64,km:435,ci:'d',cv:204,s:7.9,dc:140,mala:363,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços (5 braços)',susp:4.2,tags:['Maior autonomia MG4','Rear multibraços']},
-{b:'Zeekr',m:'X',v:'',p:189990,kwh:66,km:440,ci:'d',cv:272,s:null,dc:null,mala:null,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['Premium (grupo Geely)']},
-{b:'Honda',m:'e:NP1',v:'',p:199990,kwh:68.8,km:412,ci:'d',cv:204,s:null,dc:null,mala:null,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['Confiabilidade Honda']},
-{b:'Neta',m:'X',v:'500',p:204900,kwh:52,km:317,ci:'d',cv:163,s:null,dc:null,mala:null,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:[]},
-{b:'Leapmotor',m:'C10',v:'',p:204990,kwh:69.9,km:338,ci:'i',cv:218,s:null,dc:null,mala:435,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['Grupo Stellantis']},
-{b:'Geely',m:'EX5',v:'Pro',p:205800,kwh:60.2,km:413,ci:'i',cv:218,s:6.9,dc:null,mala:null,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['413 km Inmetro — líder da faixa','32,6 kgfm']},
-{b:'Omoda',m:'E5',v:'',p:209990,kwh:61,km:345,ci:'i',cv:204,s:null,dc:80,mala:380,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.7,tags:['Visual futurista']},
-{b:'GAC',m:'Aion V',v:'',p:214990,kwh:75,km:389,ci:'d',cv:204,s:null,dc:null,mala:null,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['"Melhor Compra 2025"']},
-{b:'MG',m:'S5',v:'',p:218800,kwh:62,km:351,ci:'d',cv:205,s:null,dc:null,mala:453,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:[]},
-{b:'Smart',m:'#1',v:'',p:219990,kwh:66,km:440,ci:'d',cv:272,s:6.7,dc:150,mala:313,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.1,tags:['Premium (Mercedes/Geely)']},
-{b:'Volvo',m:'EX30',v:'Single Ext.',p:229990,kwh:69,km:344,ci:'i',cv:272,s:5.3,dc:153,mala:318,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.2,tags:['0-100 em 5,3 s','Segurança Volvo']},
-{b:'Fiat',m:'500e',v:'',p:239990,kwh:42,km:227,ci:'i',cv:118,s:9.0,dc:85,mala:185,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.3,tags:['Ícone de design']},
-{b:'Nissan',m:'Leaf',v:'nova geração',p:239990,kwh:null,km:385,ci:'d',cv:218,s:null,dc:150,mala:null,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['Pioneiro reinventado']},
-{b:'Peugeot',m:'e-2008',v:'GT',p:249990,kwh:54,km:261,ci:'i',cv:156,s:9.1,dc:100,mala:434,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['i-Cockpit']},
-{b:'BYD',m:'Seal',v:'',p:259800,kwh:82.5,km:570,ci:'d',cv:313,s:5.9,dc:150,mala:400,o:'I',cat:'Sedã',sf:'Duplo braço',sr:'Multibraços',susp:4.4,tags:['Sedã esportivo']},
-{b:'Mini',m:'Cooper SE',v:'',p:259990,kwh:54.2,km:305,ci:'d',cv:218,s:6.7,dc:95,mala:210,o:'I',cat:'Urbano',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['Go-kart feeling']},
-{b:'Tesla',m:'Model 3',v:'',p:279990,kwh:60,km:510,ci:'d',cv:283,s:6.1,dc:170,mala:594,o:'I',cat:'Sedã',sf:'Duplo braço',sr:'Multibraços',susp:4.3,tags:['Rede Supercharger']},
-{b:'Chevrolet',m:'Equinox EV',v:'',p:299990,kwh:85,km:513,ci:'d',cv:290,s:null,dc:150,mala:null,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['Maior rede do Brasil']},
-{b:'Tesla',m:'Model Y',v:'',p:319990,kwh:null,km:455,ci:'d',cv:299,s:5.9,dc:250,mala:null,o:'I',cat:'SUV médio',sf:'Duplo braço',sr:'Multibraços',susp:4.2,tags:['SUV mais vendido do mundo']},
-{b:'Volvo',m:'EX40',v:'Twin',p:329990,kwh:78,km:438,ci:'d',cv:408,s:4.8,dc:null,mala:410,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['Tração integral']},
-{b:'BMW',m:'iX1',v:'',p:339990,kwh:64.7,km:440,ci:'d',cv:313,s:5.6,dc:130,mala:490,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['DNA BMW']},
-{b:'Hyundai',m:'Ioniq 5',v:'',p:339990,kwh:77.4,km:480,ci:'d',cv:325,s:5.3,dc:233,mala:527,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.4,tags:['Arquitetura 800 V — recarga ultrarrápida']},
-{b:'Kia',m:'EV6',v:'',p:349990,kwh:77.4,km:506,ci:'d',cv:325,s:5.2,dc:233,mala:480,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.4,tags:['800 V','World Car of the Year']},
-{b:'BYD',m:'Han EV',v:'',p:429800,kwh:85.4,km:521,ci:'d',cv:517,s:3.9,dc:120,mala:410,o:'I',cat:'Sedã',sf:'Duplo braço',sr:'Multibraços',susp:4.5,tags:['Executivo 517 cv']},
-{b:'MG',m:'Cyberster',v:'',p:499800,kwh:77,km:342,ci:'d',cv:510,s:3.2,dc:null,mala:null,o:'I',cat:'Esportivo',sf:'Duplo braço',sr:'Multibraços',susp:4.3,tags:['Único roadster elétrico do país']}
+/* ---------------- BYD ---------------- */
+{b:'BYD',m:'Dolphin Mini',v:'GL',p:118990,kwh:30,km:224,ci:'i',cv:75,s:null,dc:30,mala:230,o:'N',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.0,tags:['Bateria Blade LFP','Fab. Camaçari-BA'],nota:'Versão de entrada'},
+{b:'BYD',m:'Dolphin Mini',v:'GS',p:119990,kwh:38,km:280,ci:'i',cv:75,s:null,dc:40,mala:230,o:'N',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.0,tags:['Bateria Blade LFP','Multimídia giratória']},
+{b:'BYD',m:'Dolphin',v:'GS',p:149990,kwh:44.9,km:291,ci:'i',cv:95,s:10.9,dc:60,mala:345,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['Faróis LED','Tela giratória']},
+{b:'BYD',m:'Dolphin',v:'SE',p:159990,kwh:45.1,km:272,ci:'i',cv:177,s:8.0,dc:80,mala:345,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços',susp:3.7,tags:['ADAS nível 2','Facelift 2026']},
+{b:'BYD',m:'Dolphin',v:'Plus',p:184800,kwh:60.5,km:427,ci:'i',cv:204,s:7.0,dc:80,mala:345,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['Teto solar','Rodas 17"']},
+{b:'BYD',m:'Yuan Pro',v:'GS',p:182990,kwh:45.1,km:250,ci:'i',cv:177,s:null,dc:70,mala:265,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Barra de torção',susp:3.3,tags:['Bateria Blade LFP','e-Platform 3.0']},
+{b:'BYD',m:'Yuan Plus',v:'',p:189800,kwh:60.5,km:294,ci:'i',cv:204,s:7.3,dc:80,mala:440,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.7,tags:['Bateria Blade LFP','Interior "academia"']},
+{b:'BYD',m:'Seal',v:'Design',p:259800,kwh:82.5,km:570,ci:'d',cv:313,s:5.9,dc:150,mala:400,o:'I',cat:'Sedã',sf:'Duplo braço',sr:'Multibraços',susp:4.4,tags:['Blade LFP CTB','Teto panorâmico']},
+{b:'BYD',m:'Seal',v:'Performance AWD',p:319800,kwh:82.5,km:520,ci:'d',cv:530,s:3.8,dc:150,mala:400,o:'I',cat:'Esportivo',sf:'Duplo braço',sr:'Multibraços',susp:4.4,tags:['AWD','Dynaudio','530 cv']},
+{b:'BYD',m:'Han EV',v:'',p:429800,kwh:85.4,km:521,ci:'d',cv:517,s:3.9,dc:120,mala:410,o:'I',cat:'Sedã',sf:'Duplo braço',sr:'Multibraços',susp:4.5,tags:['Executivo 517 cv','AWD']},
+/* ---------------- GAC / Aion ---------------- */
+{b:'GAC',m:'Aion UT',v:'Premium',p:139990,kwh:44.1,km:253,ci:'i',cv:204,s:8.6,dc:87,mala:340,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.3,tags:['Wallbox grátis','Câmera 360°','V2L']},
+{b:'GAC',m:'Aion UT',v:'Elite',p:159990,kwh:60,km:310,ci:'i',cv:204,s:7.3,dc:87,mala:340,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['ADAS nível 2 (11 funções)','V2L']},
+{b:'GAC',m:'Aion ES',v:'',p:170990,kwh:55,km:314,ci:'d',cv:136,s:null,dc:null,mala:453,o:'I',cat:'Sedã',sf:'McPherson',sr:'Barra de torção',susp:3.1,tags:['Foco em frotas/apps']},
+{b:'GAC',m:'Aion Y',v:'Premium',p:175990,kwh:63,km:318,ci:'d',cv:204,s:null,dc:75,mala:361,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['Bateria LFP','Espaço interno']},
+{b:'GAC',m:'Aion Y',v:'Elite',p:184990,kwh:63,km:318,ci:'i',cv:204,s:null,dc:75,mala:361,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['ADAS','Topo de linha']},
+{b:'GAC',m:'Aion V',v:'Elite',p:219990,kwh:75,km:389,ci:'i',cv:204,s:7.9,dc:180,mala:427,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['Recarga rápida 180 kW','"Melhor Compra 2025"']},
+/* ---------------- GWM Ora ---------------- */
+{b:'GWM',m:'Ora 03',v:'Skin',p:169000,kwh:48,km:232,ci:'d',cv:171,s:null,dc:80,mala:228,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['Design retrô','Foco em segurança']},
+{b:'GWM',m:'Ora 03',v:'GT',p:199000,kwh:63,km:319,ci:'d',cv:171,s:null,dc:80,mala:228,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['Teto solar','Topo de linha']},
+/* ---------------- Zeekr ---------------- */
+{b:'Zeekr',m:'X',v:'Premium',p:272000,kwh:66,km:332,ci:'i',cv:272,s:null,dc:150,mala:362,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['Premium (grupo Geely)','Plataforma SEA']},
+{b:'Zeekr',m:'X',v:'Flagship',p:338000,kwh:66,km:332,ci:'i',cv:428,s:3.8,dc:150,mala:362,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.1,tags:['AWD','0-100 em 3,8 s']},
+{b:'Zeekr',m:'7X',v:'Premium',p:378000,kwh:null,km:491,ci:'d',cv:421,s:null,dc:null,mala:539,o:'I',cat:'SUV médio',sf:'Duplo braço',sr:'Multibraços',susp:4.1,tags:['RWD','800V']},
+/* ---------------- Geely ---------------- */
+{b:'Geely',m:'EX2',v:'Pro',p:123800,kwh:39.4,km:289,ci:'i',cv:116,s:10.2,dc:70,mala:375,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.2,tags:['Tração traseira','Frunk 70 L'],nota:'Produção nacional anunciada (Renault-PR)'},
+{b:'Geely',m:'EX2',v:'Max',p:136800,kwh:39.4,km:289,ci:'i',cv:116,s:10.2,dc:70,mala:375,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.2,tags:['Câmera 540°','Rodas liga 16"']},
+{b:'Geely',m:'EX5',v:'Pro',p:205800,kwh:60.2,km:413,ci:'i',cv:218,s:6.9,dc:100,mala:461,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['413 km Inmetro — líder da faixa']},
+{b:'Geely',m:'EX5',v:'Max',p:225800,kwh:60.2,km:349,ci:'i',cv:218,s:7.1,dc:100,mala:461,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['Rodas 19"','Topo de linha']},
+/* ---------------- Omoda ---------------- */
+{b:'Omoda',m:'E5',v:'',p:209990,kwh:61,km:345,ci:'i',cv:204,s:7.6,dc:80,mala:380,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.7,tags:['Visual futurista']},
+/* ---------------- Caoa Chery ---------------- */
+{b:'Caoa Chery',m:'iCar',v:'',p:119990,kwh:30.8,km:197,ci:'i',cv:61,s:12.8,dc:50,mala:100,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:2.6,tags:['Microurbano ágil']},
+/* ---------------- JAC ---------------- */
+{b:'JAC',m:'e-JS1',v:'',p:119900,kwh:31.4,km:181,ci:'i',cv:62,s:10.7,dc:null,mala:121,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:2.7,tags:['Veterano do segmento']},
+{b:'JAC',m:'e-JS1',v:'EXT',p:138900,kwh:31.4,km:181,ci:'i',cv:62,s:10.7,dc:null,mala:121,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:2.7,tags:['Suspensão elevada']},
+/* ---------------- Neta ---------------- */
+{b:'Neta',m:'Aya',v:'Comfort',p:124900,kwh:40,km:263,ci:'i',cv:95,s:12.0,dc:null,mala:335,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Barra de torção',susp:3.0,tags:['Bateria CATL']},
+{b:'Neta',m:'Aya',v:'Luxury',p:134900,kwh:40,km:263,ci:'i',cv:95,s:12.0,dc:null,mala:335,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Barra de torção',susp:3.0,tags:['ADAS']},
+{b:'Neta',m:'X',v:'400',p:194900,kwh:52,km:258,ci:'i',cv:163,s:9.5,dc:null,mala:508,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['Bateria LFP']},
+{b:'Neta',m:'X',v:'500',p:204900,kwh:64,km:317,ci:'i',cv:163,s:9.5,dc:null,mala:508,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['Bateria LFP']},
+{b:'Neta',m:'X',v:'500 Luxury',p:214900,kwh:64,km:317,ci:'i',cv:163,s:9.5,dc:null,mala:508,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['ADAS','Topo de linha']},
+/* ---------------- Leapmotor ---------------- */
+{b:'Leapmotor',m:'B10',v:'',p:182990,kwh:56.2,km:288,ci:'i',cv:218,s:8.0,dc:140,mala:430,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['Grupo Stellantis','50% em 15 min'],nota:'Nacionalização anunciada (Goiana-PE)'},
+{b:'Leapmotor',m:'C10',v:'',p:189990,kwh:69.9,km:338,ci:'i',cv:218,s:8.3,dc:84,mala:465,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['Grupo Stellantis','Versão BEV']},
+/* ---------------- MG ---------------- */
+{b:'MG',m:'MG4 Urban',v:'Comfort 43',p:129990,kwh:43,km:299,ci:'i',cv:150,s:9.6,dc:87,mala:477,o:'I',cat:'Hatch',sf:'McPherson',sr:'Eixo de torção',susp:3.4,tags:['Bateria LFP 43 kWh','7 airbags','15 funções ADAS'],nota:'Porta de entrada da MG · rear por eixo de torção'},
+{b:'MG',m:'MG4 Urban',v:'Luxury 43',p:139990,kwh:43,km:299,ci:'i',cv:150,s:9.6,dc:87,mala:477,o:'I',cat:'Hatch',sf:'McPherson',sr:'Eixo de torção',susp:3.4,tags:['Bateria LFP 43 kWh','Acabamento Luxury']},
+{b:'MG',m:'MG4 Urban',v:'Luxury 54',p:149990,kwh:54,km:358,ci:'i',cv:160,s:9.5,dc:87,mala:477,o:'I',cat:'Hatch',sf:'McPherson',sr:'Eixo de torção',susp:3.4,tags:['Bateria 54 kWh','358 km Inmetro'],nota:'Maior autonomia da linha Urban'},
+{b:'MG',m:'MG4',v:'Comfort',p:169600,kwh:64,km:364,ci:'i',cv:190,s:7.2,dc:88,mala:363,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços (5 braços)',susp:4.2,tags:['Tração traseira','Rear multibraços']},
+{b:'MG',m:'MG4',v:'Luxury',p:189800,kwh:64,km:364,ci:'i',cv:190,s:7.2,dc:88,mala:363,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços (5 braços)',susp:4.2,tags:['Tração traseira','Dirigibilidade premiada']},
+{b:'MG',m:'MG4',v:'X-Power',p:229800,kwh:64,km:279,ci:'i',cv:435,s:3.8,dc:88,mala:363,o:'I',cat:'Esportivo',sf:'McPherson',sr:'Multibraços (5 braços)',susp:4.3,tags:['AWD','435 cv','0-100 em 3,8 s']},
+{b:'MG',m:'S5',v:'Comfort',p:189800,kwh:64,km:351,ci:'i',cv:205,s:6.3,dc:140,mala:453,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['Tração traseira','LFP']},
+{b:'MG',m:'S5',v:'Luxury',p:219800,kwh:64,km:351,ci:'i',cv:205,s:6.3,dc:140,mala:453,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['Teto panorâmico','Câmera 360°']},
+{b:'MG',m:'Cyberster',v:'GT',p:529800,kwh:77,km:342,ci:'i',cv:510,s:3.2,dc:150,mala:null,o:'I',cat:'Esportivo',sf:'Duplo braço',sr:'Multibraços',susp:4.3,tags:['Roadster','AWD','Portas tesoura']},
+/* ---------------- Tesla (sem operação oficial — preço estimado de importação) ---------------- */
+{b:'Tesla',m:'Model 3',v:'RWD',p:590000,kwh:60,km:513,ci:'d',cv:283,s:6.1,dc:170,mala:594,o:'I',cat:'Sedã',sf:'Duplo braço',sr:'Multibraços',susp:4.3,tags:['Importado (estimativa)','Rede Supercharger'],nota:'Sem operação oficial no BR — preço estimado de importação'},
+{b:'Tesla',m:'Model 3',v:'Long Range AWD',p:690000,kwh:79,km:629,ci:'d',cv:498,s:4.4,dc:250,mala:594,o:'I',cat:'Sedã',sf:'Duplo braço',sr:'Multibraços',susp:4.3,tags:['AWD','Importado (estimativa)'],nota:'Preço estimado de importação'},
+{b:'Tesla',m:'Model 3',v:'Performance',p:790000,kwh:79,km:528,ci:'d',cv:460,s:3.1,dc:250,mala:594,o:'I',cat:'Esportivo',sf:'Duplo braço',sr:'Multibraços',susp:4.3,tags:['AWD','Importado (estimativa)'],nota:'Preço estimado de importação'},
+{b:'Tesla',m:'Model Y',v:'RWD',p:620000,kwh:60,km:455,ci:'d',cv:295,s:5.9,dc:170,mala:854,o:'I',cat:'SUV médio',sf:'Duplo braço',sr:'Multibraços',susp:4.2,tags:['Importado (estimativa)'],nota:'Sem operação oficial no BR — preço estimado de importação'},
+{b:'Tesla',m:'Model Y',v:'Long Range AWD',p:720000,kwh:79,km:600,ci:'d',cv:378,s:4.8,dc:250,mala:854,o:'I',cat:'SUV médio',sf:'Duplo braço',sr:'Multibraços',susp:4.2,tags:['AWD','Importado (estimativa)'],nota:'Preço estimado de importação'},
+{b:'Tesla',m:'Model Y',v:'Performance',p:820000,kwh:79,km:580,ci:'d',cv:460,s:3.5,dc:250,mala:854,o:'I',cat:'SUV médio',sf:'Duplo braço',sr:'Multibraços',susp:4.2,tags:['AWD','Importado (estimativa)'],nota:'Preço estimado de importação'},
+/* ---------------- Volvo ---------------- */
+{b:'Volvo',m:'EX30',v:'Core',p:212554,kwh:51,km:250,ci:'i',cv:272,s:5.7,dc:153,mala:318,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.2,tags:['RWD','Entrada']},
+{b:'Volvo',m:'EX30',v:'Plus',p:250599,kwh:64,km:316,ci:'i',cv:272,s:5.3,dc:153,mala:318,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.2,tags:['RWD','Autonomia estendida']},
+{b:'Volvo',m:'EX30',v:'Ultra Twin',p:309950,kwh:64,km:316,ci:'i',cv:428,s:3.6,dc:153,mala:318,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['AWD','0-100 em 3,6 s']},
+{b:'Volvo',m:'EX30',v:'Cross Country',p:314950,kwh:64,km:316,ci:'i',cv:428,s:3.6,dc:153,mala:318,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['AWD','Pacote aventura']},
+{b:'Volvo',m:'EX40',v:'Plus',p:329950,kwh:82,km:404,ci:'i',cv:238,s:7.3,dc:200,mala:410,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['RWD','Single Motor']},
+{b:'Volvo',m:'EX40',v:'Ultra Twin',p:379950,kwh:82,km:393,ci:'i',cv:408,s:4.8,dc:200,mala:410,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['AWD','Twin Motor']},
+{b:'Volvo',m:'EC40',v:'Plus',p:334950,kwh:69,km:385,ci:'i',cv:238,s:7.4,dc:150,mala:404,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['RWD','Cupê']},
+{b:'Volvo',m:'EC40',v:'Ultra Twin',p:384950,kwh:82,km:404,ci:'i',cv:408,s:4.8,dc:200,mala:404,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['AWD','Cupê']},
+/* ---------------- Mini ---------------- */
+{b:'Mini',m:'Cooper',v:'E',p:209990,kwh:36.6,km:246,ci:'i',cv:184,s:7.2,dc:75,mala:210,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['3 portas','Entrada']},
+{b:'Mini',m:'Cooper',v:'SE',p:264990,kwh:54.2,km:303,ci:'i',cv:218,s:6.7,dc:100,mala:210,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['Go-kart feeling','Topo']},
+{b:'Mini',m:'Aceman',v:'E',p:254990,kwh:42.5,km:253,ci:'i',cv:184,s:7.9,dc:75,mala:300,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['Crossover','Entrada']},
+{b:'Mini',m:'Aceman',v:'SE',p:304990,kwh:54.2,km:270,ci:'i',cv:218,s:7.1,dc:95,mala:300,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['Crossover','Topo']},
+{b:'Mini',m:'Countryman',v:'SE ALL4',p:409990,kwh:66.5,km:320,ci:'i',cv:313,s:5.6,dc:130,mala:460,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.1,tags:['AWD','Único Countryman elétrico']},
+/* ---------------- BMW ---------------- */
+{b:'BMW',m:'iX1',v:'eDrive20',p:359950,kwh:64.7,km:332,ci:'i',cv:204,s:8.6,dc:130,mala:490,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['FWD','X-Line']},
+{b:'BMW',m:'iX1',v:'xDrive30',p:454950,kwh:64.7,km:303,ci:'i',cv:313,s:5.6,dc:130,mala:490,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['AWD','M Sport']},
+{b:'BMW',m:'iX2',v:'xDrive30',p:463950,kwh:64.7,km:337,ci:'i',cv:313,s:5.6,dc:130,mala:525,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['AWD','Cupê']},
+{b:'BMW',m:'i4',v:'eDrive40',p:469950,kwh:81.3,km:422,ci:'i',cv:340,s:5.7,dc:205,mala:470,o:'I',cat:'Sedã',sf:'McPherson',sr:'Multibraços',susp:4.4,tags:['RWD','Gran Coupé']},
+{b:'BMW',m:'i4',v:'M50',p:661950,kwh:81.3,km:381,ci:'i',cv:544,s:3.9,dc:205,mala:470,o:'I',cat:'Esportivo',sf:'McPherson',sr:'Multibraços',susp:4.4,tags:['AWD','M Performance']},
+{b:'BMW',m:'iX',v:'xDrive40',p:726950,kwh:76.6,km:327,ci:'i',cv:326,s:6.1,dc:150,mala:500,o:'I',cat:'SUV grande',sf:'McPherson',sr:'Multibraços',susp:4.5,tags:['AWD']},
+{b:'BMW',m:'iX',v:'xDrive50',p:923950,kwh:111.5,km:528,ci:'i',cv:523,s:4.6,dc:195,mala:500,o:'I',cat:'SUV grande',sf:'McPherson',sr:'Multibraços',susp:4.5,tags:['AWD','Longa autonomia']},
+{b:'BMW',m:'iX',v:'M60',p:1143950,kwh:111.5,km:431,ci:'i',cv:619,s:3.8,dc:195,mala:500,o:'I',cat:'SUV grande',sf:'McPherson',sr:'Multibraços',susp:4.5,tags:['AWD','M Performance']},
+/* ---------------- Hyundai ---------------- */
+{b:'Hyundai',m:'Ioniq 5',v:'Signature',p:394990,kwh:84,km:374,ci:'i',cv:325,s:5.3,dc:233,mala:520,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.4,tags:['AWD','Arquitetura 800 V']},
+/* ---------------- Chevrolet ---------------- */
+{b:'Chevrolet',m:'Spark EUV',v:'',p:144990,kwh:42,km:258,ci:'i',cv:102,s:11.0,dc:50,mala:355,o:'N',cat:'SUV compacto',sf:'McPherson',sr:'Barra de torção',susp:3.2,tags:['Montado no Brasil','6 airbags','Rede Chevrolet']},
+{b:'Chevrolet',m:'Equinox EV',v:'RS',p:419000,kwh:66.9,km:443,ci:'i',cv:292,s:5.8,dc:150,mala:441,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['Plataforma Ultium']},
+{b:'Chevrolet',m:'Blazer EV',v:'RS',p:503190,kwh:102,km:481,ci:'i',cv:347,s:null,dc:150,mala:900,o:'I',cat:'SUV grande',sf:'McPherson',sr:'Multibraços',susp:4.1,tags:['Plataforma Ultium']},
+/* ---------------- Peugeot ---------------- */
+{b:'Peugeot',m:'e-2008',v:'GT',p:259990,kwh:54,km:261,ci:'i',cv:156,s:9.9,dc:100,mala:434,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['i-Cockpit']},
+/* ---------------- Fiat ---------------- */
+{b:'Fiat',m:'500e',v:'Icon',p:239990,kwh:42,km:320,ci:'d',cv:118,s:9.0,dc:85,mala:185,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.3,tags:['Ícone de design']},
+/* ---------------- Renault ---------------- */
+{b:'Renault',m:'Kwid E-Tech',v:'Techno',p:99990,kwh:26.8,km:180,ci:'i',cv:65,s:null,dc:30,mala:290,o:'N',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:2.8,tags:['Mais barato do país','ADAS'],nota:'Elétrico mais barato do Brasil'}
 ];
