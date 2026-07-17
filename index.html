@@ -186,6 +186,12 @@ select{background:var(--painel);color:var(--texto);border:1px solid var(--linha)
 .susp .sv{text-align:right;line-height:1.3}
 .susp .st{color:var(--alerta);letter-spacing:1px}
 .susp .sn{font-family:var(--mono);color:var(--texto)}
+/* equipamento no card */
+.equip{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.eq{font-size:10.5px;font-family:var(--mono);color:var(--texto2);background:var(--painel2);border:1px solid var(--linha);border-radius:7px;padding:3px 8px}
+.eq b{color:var(--texto);font-weight:700}
+.eq.eq-hi{color:var(--status);border-color:rgba(1,168,120,.35);background:var(--status-dim)}
+.eq.eq-teto{color:var(--carga);border-color:rgba(79,209,197,.4);background:var(--carga-dim)}
 .tags{display:flex;flex-wrap:wrap;gap:5px}
 .tag{font-size:10.5px;padding:3px 8px;border-radius:6px;background:var(--painel2);border:1px solid var(--linha);color:var(--texto2)}
 .cb-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
@@ -370,6 +376,7 @@ footer a:hover{text-decoration:underline}
   <section class="pane on" id="pane-catalogo">
     <div class="filters" id="catFilters"></div>
     <div class="filters" id="origFilters"></div>
+    <div class="filters" id="equipFilters"></div>
     <div class="sortrow">
       <label for="sortSel" class="hint">Ordenar:</label>
       <select id="sortSel">
@@ -555,9 +562,11 @@ const tier=v=>v>=75?'t-hi':v>=60?'t-mid':v>=45?'t-ok':'t-lo';
 let sel=[];              // ids no comparador (máx 4)
 let fCat=new Set();      // filtros categoria
 let fOrig='T';           // T | N | I
+let fEquip=new Set();     // filtros de equipamento
 let sortBy='preco';
 const $=q=>document.querySelector(q);
 const CATS=[...new Set(CARS.map(c=>c.cat))];
+const EQF=[['adas2','ADAS Nível 2'],['teto','Teto solar'],['v2l','V2L'],['air6','6+ airbags']];
 const PAL=['#2f9e91','#2152ff','#ed8936','#805ad5'];
 
 /* =============== tabs =============== */
@@ -709,11 +718,20 @@ function renderFilters(){
   document.querySelectorAll('[data-cat]').forEach(b=>b.addEventListener('click',()=>{
     const c=b.dataset.cat;fCat.has(c)?fCat.delete(c):fCat.add(c);renderFilters();renderCards();}));
   document.querySelectorAll('[data-orig]').forEach(b=>b.addEventListener('click',()=>{fOrig=b.dataset.orig;renderFilters();renderCards();}));
+  $('#equipFilters').innerHTML=EQF.map(([k,l])=>`<button class="chip" aria-pressed="${fEquip.has(k)}" data-eq="${k}">${l}</button>`).join('');
+  document.querySelectorAll('[data-eq]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.eq;fEquip.has(k)?fEquip.delete(k):fEquip.add(k);renderFilters();renderCards();}));
 }
 $('#sortSel').addEventListener('change',e=>{sortBy=e.target.value;renderCards();});
 
+function eqOK(c){
+  if(fEquip.has('adas2')&&c.adas!=='Nível 2')return false;
+  if(fEquip.has('teto')&&!(c.teto&&c.teto!=='—'))return false;
+  if(fEquip.has('v2l')&&!(c.tec&&c.tec.includes('V2L')))return false;
+  if(fEquip.has('air6')&&!(c.air>=6))return false;
+  return true;
+}
 function visible(){
-  return CARS.filter(c=>(fCat.size===0||fCat.has(c.cat))&&(fOrig==='T'||c.o===fOrig));
+  return CARS.filter(c=>(fCat.size===0||fCat.has(c.cat))&&(fOrig==='T'||c.o===fOrig)&&eqOK(c));
 }
 function renderCards(){
   const list=visible().sort((a,b)=>{
@@ -745,6 +763,11 @@ function renderCards(){
        <span class="sk">Suspensão</span>
        <span class="sv">${c.sf} / ${c.sr}<br><span class="st">${stars(c.susp)}</span> <span class="sn">${c.susp.toFixed(1)}</span></span>
      </div>
+     <div class="equip">
+       <span class="eq"><b>${c.air??'—'}</b> airbag${c.air===1?'':'s'}</span>
+       <span class="eq ${c.adas==='Nível 2'?'eq-hi':''}">🛡 ADAS ${c.adas}</span>
+       ${c.teto&&c.teto!=='—'?`<span class="eq eq-teto">☀️ Teto ${c.teto.toLowerCase()}</span>`:''}
+     </div>
      ${c.tags.length?`<div class="tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}
      ${c.nota?`<div class="note">${c.nota}</div>`:''}
      <div class="cb-row">
@@ -775,6 +798,10 @@ function renderCmp(){
     ['Suspensão dianteira',null,c=>c.sf||'—',null],
     ['Suspensão traseira',null,c=>c.sr||'—',null],
     ['Conforto / rodagem',c=>c.susp,c=>c.susp?stars(c.susp)+' '+c.susp.toFixed(1):'—','max'],
+    ['Airbags',c=>c.air,c=>c.air!=null?c.air+' airbags':'—','max'],
+    ['ADAS',c=>({'—':0,'Básico':1,'Nível 1':2,'Nível 2':3}[c.adas]||0),c=>c.adas||'—','max'],
+    ['Teto solar',null,c=>(c.teto&&c.teto!=='—')?c.teto:'—',null],
+    ['Tecnologias',null,c=>(c.tec&&c.tec.length)?c.tec.join(' · '):'—',null],
     ['Origem',null,c=>c.o==='N'?'🇧🇷 Nacional':'Importado',null],
     ['Score Geral',c=>c.overall,c=>c.overall+' / 100','max'],
     ['Score custo-benefício',c=>c.score,c=>c.score+' / 100','max'],
