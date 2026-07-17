@@ -26,9 +26,9 @@ var CARS=[
 {b:'GAC',m:'Aion UT',v:'Premium',p:139990,kwh:44.1,km:253,ci:'i',cv:204,s:8.6,dc:87,mala:340,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.3,tags:['Wallbox grátis','Câmera 360°','V2L']},
 {b:'GAC',m:'Aion UT',v:'Elite',p:159990,kwh:60,km:310,ci:'i',cv:204,s:7.3,dc:87,mala:340,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['ADAS nível 2 (11 funções)','V2L']},
 {b:'GAC',m:'Aion ES',v:'',p:170990,kwh:55,km:314,ci:'d',cv:136,s:null,dc:null,mala:453,o:'I',cat:'Sedã',sf:'McPherson',sr:'Barra de torção',susp:3.1,tags:['Foco em frotas/apps']},
-{b:'GAC',m:'Aion Y',v:'Premium',p:175990,kwh:63,km:318,ci:'d',cv:204,s:null,dc:75,mala:361,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['Bateria LFP','Espaço interno']},
-{b:'GAC',m:'Aion Y',v:'Elite',p:184990,kwh:63,km:318,ci:'i',cv:204,s:null,dc:75,mala:361,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['ADAS','Topo de linha']},
-{b:'GAC',m:'Aion V',v:'Elite',p:219990,kwh:75,km:389,ci:'i',cv:204,s:7.9,dc:180,mala:427,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['Recarga rápida 180 kW','"Melhor Compra 2025"']},
+{b:'GAC',m:'Aion Y',v:'Premium',p:175990,kwh:63,km:318,ci:'d',cv:204,s:null,dc:75,mala:361,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Barra de torção',susp:3.3,tags:['Bateria LFP','Espaço interno']},
+{b:'GAC',m:'Aion Y',v:'Elite',p:184990,kwh:63,km:318,ci:'i',cv:204,s:null,dc:75,mala:361,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Barra de torção',susp:3.3,tags:['ADAS','Topo de linha']},
+{b:'GAC',m:'Aion V',v:'Elite',p:219990,kwh:75,km:389,ci:'i',cv:204,s:7.9,dc:180,mala:427,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['Recarga rápida 180 kW','"Melhor Compra 2025"']},
 /* ---------------- GWM Ora ---------------- */
 {b:'GWM',m:'Ora 03',v:'Skin',p:169000,kwh:48,km:232,ci:'d',cv:171,s:null,dc:80,mala:228,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['Design retrô','Foco em segurança']},
 {b:'GWM',m:'Ora 03',v:'GT',p:199000,kwh:63,km:319,ci:'d',cv:171,s:null,dc:80,mala:228,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['Teto solar','Topo de linha']},
@@ -37,8 +37,8 @@ var CARS=[
 {b:'Zeekr',m:'X',v:'Flagship',p:338000,kwh:66,km:332,ci:'i',cv:428,s:3.8,dc:150,mala:362,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.1,tags:['AWD','0-100 em 3,8 s']},
 {b:'Zeekr',m:'7X',v:'Premium',p:378000,kwh:null,km:491,ci:'d',cv:421,s:null,dc:null,mala:539,o:'I',cat:'SUV médio',sf:'Duplo braço',sr:'Multibraços',susp:4.1,tags:['RWD','800V']},
 /* ---------------- Geely ---------------- */
-{b:'Geely',m:'EX2',v:'Pro',p:123800,kwh:39.4,km:289,ci:'i',cv:116,s:10.2,dc:70,mala:375,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.2,tags:['Tração traseira','Frunk 70 L'],nota:'Produção nacional anunciada (Renault-PR)'},
-{b:'Geely',m:'EX2',v:'Max',p:136800,kwh:39.4,km:289,ci:'i',cv:116,s:10.2,dc:70,mala:375,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.2,tags:['Câmera 540°','Rodas liga 16"']},
+{b:'Geely',m:'EX2',v:'Pro',p:123800,kwh:39.4,km:289,ci:'i',cv:116,s:10.2,dc:70,mala:375,o:'I',cat:'Urbano',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['Tração traseira','Frunk 70 L','Rear independente'],nota:'Produção nacional anunciada (Renault-PR)'},
+{b:'Geely',m:'EX2',v:'Max',p:136800,kwh:39.4,km:289,ci:'i',cv:116,s:10.2,dc:70,mala:375,o:'I',cat:'Urbano',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['Câmera 540°','Rodas liga 16"','Rear independente']},
 {b:'Geely',m:'EX5',v:'Pro',p:205800,kwh:60.2,km:413,ci:'i',cv:218,s:6.9,dc:100,mala:461,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['413 km Inmetro — líder da faixa']},
 {b:'Geely',m:'EX5',v:'Max',p:225800,kwh:60.2,km:349,ci:'i',cv:218,s:7.1,dc:100,mala:461,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['Rodas 19"','Topo de linha']},
 /* ---------------- Omoda ---------------- */
