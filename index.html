@@ -311,6 +311,39 @@ footer a:hover{text-decoration:underline}
 
 /* superfícies com leve elevação */
 .card,.tablewrap,.panel,.sim-card{box-shadow:var(--shadow)}
+.card{cursor:pointer}
+/* ---------- modal de perfil ---------- */
+.modal-ov{position:fixed;inset:0;background:rgba(45,55,72,.55);opacity:0;visibility:hidden;transition:opacity .2s;z-index:70}
+.modal-ov.on{opacity:1;visibility:visible}
+.modal{position:fixed;z-index:71;left:50%;top:50%;transform:translate(-50%,-47%) scale(.98);opacity:0;visibility:hidden;
+  width:min(700px,94vw);max-height:90vh;overflow-y:auto;background:var(--painel);border-radius:var(--rlg);
+  box-shadow:var(--shadow-lg);transition:opacity .2s,transform .2s}
+.modal.on{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:20px 22px 8px;position:sticky;top:0;background:var(--painel);z-index:2;border-bottom:1px solid var(--linha)}
+.mhead .brand{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--texto3)}
+.mhead h2{font-weight:800;font-size:20px;margin-top:3px;line-height:1.1}
+.mclose{flex:none;width:36px;height:36px;border-radius:10px;background:var(--painel2);color:var(--texto2);font-size:15px;display:grid;place-items:center}
+.mclose:hover{color:var(--texto)}
+.mbody{padding:14px 22px 22px}
+.mprice{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.mprice .price{font-size:24px}
+.mrank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+.mrank .rk{font-size:11.5px;font-family:var(--mono);background:var(--painel2);border:1px solid var(--linha);border-radius:99px;padding:5px 11px;color:var(--texto2)}
+.mrank .rk b{color:var(--carga)}
+.msec{border-top:1px solid var(--linha);padding:14px 0 2px;margin-top:12px}
+.msec h3{font-size:12.5px;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
+.mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+@media(min-width:520px){.mgrid{grid-template-columns:repeat(4,1fr)}}
+.mg{background:var(--painel2);border-radius:10px;padding:9px 11px}
+.mg .k{font-size:9px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--texto3)}
+.mg .v{font-family:var(--mono);font-weight:600;font-size:15px;margin-top:2px}
+.mtec{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.mverdict{font-size:13px;color:var(--texto2);line-height:1.7}
+.mverdict b{color:var(--texto)}
+.mverdict .pro{color:var(--status);font-weight:600} .mverdict .con{color:var(--alerta);font-weight:600}
+.mact{display:flex;gap:10px;margin-top:20px}
+.mact button{flex:1;padding:11px;border-radius:12px;font-weight:700;font-size:13.5px}
+.mact .cmp{background:var(--carga);color:#fff} .mact .cls{background:var(--painel2);color:var(--texto)}
 </style>
 </head>
 <body>
@@ -527,6 +560,9 @@ footer a:hover{text-decoration:underline}
   </div>
 </footer>
 </div><!-- /shell -->
+<div class="modal-ov" id="modalOv"></div>
+<div class="modal" id="carModal" role="dialog" aria-modal="true" aria-label="Perfil do carro"></div>
+
 <script src="cars.js"></script>
 <script>
 /* =============== DADOS · jul/2026 · preços "a partir de" =============== */
@@ -557,6 +593,119 @@ const cyc=c=>c.ci==='i'?'':'≈';
 const kmLbl=c=>c.ci==='i'?'Inmetro':'estim.';
 const stars=v=>{if(v==null)return'—';const f=Math.round(v);return'★'.repeat(f)+'☆'.repeat(5-f);};
 const tier=v=>v>=75?'t-hi':v>=60?'t-mid':v>=45?'t-ok':'t-lo';
+
+/* =============== garantia por marca (veículo · bateria) =============== */
+const GAR={
+ 'BYD':['6 anos / 200.000 km','8 anos / 200.000 km'],
+ 'GAC':['8 anos / 160.000 km','8 anos / 200.000 km'],
+ 'GWM':['5 anos','8 anos / 200.000 km'],
+ 'Zeekr':['5 anos','8 anos / 200.000 km'],
+ 'Geely':['6 anos / 150.000 km','8 anos / 150.000 km'],
+ 'Omoda':['7 anos / 150.000 km','8 anos / 150.000 km'],
+ 'Caoa Chery':['7 anos / 150.000 km','8 anos / 150.000 km'],
+ 'JAC':['6 anos','8 anos / 200.000 km'],
+ 'Neta':['5 anos / 150.000 km','8 anos / 180.000 km'],
+ 'Leapmotor':['4 anos / 100.000 km','8 anos / 160.000 km'],
+ 'MG':['7 anos / 150.000 km','8 anos / 160.000 km'],
+ 'Tesla':['—','—'],
+ 'Volvo':['8 anos / 160.000 km','8 anos / 160.000 km'],
+ 'Mini':['3 anos','8 anos / 160.000 km'],
+ 'BMW':['2 anos','8 anos / 160.000 km'],
+ 'Hyundai':['5 anos','8 anos / 160.000 km'],
+ 'Chevrolet':['3 anos','8 anos / 160.000 km'],
+ 'Peugeot':['3 anos','8 anos / 160.000 km'],
+ 'Fiat':['3 anos','8 anos / 160.000 km'],
+ 'Renault':['3 anos / 100.000 km','8 anos / 160.000 km']
+};
+
+/* =============== perfil do carro (modal) =============== */
+function catRank(c,key,dir){
+  const list=CARS.filter(x=>x.cat===c.cat).sort((a,b)=>dir==='min'?a[key]-b[key]:b[key]-a[key]);
+  return [list.findIndex(x=>x.id===c.id)+1,list.length];
+}
+function openProfile(id){
+  const c=CARS[id];
+  const posCB=[...CARS].sort((a,b)=>b.score-a.score).findIndex(x=>x.id===c.id)+1;
+  const posG=[...CARS].sort((a,b)=>b.overall-a.overall).findIndex(x=>x.id===c.id)+1;
+  const [posCat,nCat]=catRank(c,'score','max');
+  const eff=c.kwh?Math.round(c.kwh*1000/c.km):null;
+  const g=GAR[c.b]||['—','—'];
+  const pros=[],cons=[];
+  const [rKm]=catRank(c,'kmA','max');
+  const [rKmrs,nk]=catRank(c,'kmrs','max');
+  const [rP]=catRank(c,'p','min');
+  if(rP===1&&nk>3)pros.push('mais barato da categoria');
+  if(rKm===1&&nk>3)pros.push('maior autonomia da categoria'); else if(rKm<=3&&nk>5)pros.push('autonomia entre as melhores da categoria');
+  if(rKmrs<=Math.max(2,Math.ceil(nk*0.25))&&nk>3)pros.push('ótimo custo por km');
+  if(c.air>=7)pros.push(c.air+' airbags');
+  if(c.adas==='Nível 2')pros.push('ADAS Nível 2');
+  if(c.teto&&c.teto!=='—')pros.push('teto '+c.teto.toLowerCase());
+  if(c.sr.includes('Multibraços'))pros.push('suspensão traseira independente');
+  if(c.s&&c.s<7)pros.push('aceleração forte ('+c.s.toFixed(1)+'s)');
+  if(eff&&eff>205)cons.push('consumo alto ('+eff+' Wh/km)');
+  if(rKm>=nCat&&nk>4)cons.push('autonomia curta para a categoria');
+  if(c.adas==='Básico')cons.push('sem ADAS Nível 2');
+  if(c.air!=null&&c.air<=2)cons.push('apenas '+c.air+' airbags');
+  if(c.b==='Tesla')cons.push('sem operação/garantia oficial no Brasil');
+  const el=document.getElementById('carModal');
+  el.innerHTML=`
+    <div class="mhead">
+      <div><div class="brand">${c.b} · ${c.cat}${c.o==="N"?" · 🇧🇷 Nacional":""}</div><h2>${c.m}${c.v?" "+c.v:""}</h2></div>
+      <button class="mclose" onclick="closeProfile()" aria-label="Fechar">✕</button>
+    </div>
+    <div class="mbody">
+      <div class="mprice">
+        <span class="price">${fmtR(c.p)}</span>
+        <span class="scorebadge ${tier(c.overall)}"><b>${c.overall}</b><span>geral</span></span>
+        <span class="scorebadge ${tier(c.score)}"><b>${c.score}</b><span>CB</span></span>
+      </div>
+      <div class="mrank">
+        <span class="rk">Score Geral: <b>#${posG}</b> / ${CARS.length}</span>
+        <span class="rk">Custo-benefício: <b>#${posCB}</b> / ${CARS.length}</span>
+        <span class="rk">${c.cat}: <b>#${posCat}</b> / ${nCat}</span>
+      </div>
+      <div class="msec"><h3>⚙️ Ficha técnica</h3><div class="mgrid">
+        <div class="mg"><div class="k">Autonomia ${kmLbl(c)}</div><div class="v">${cyc(c)}${fmtK(c.kmA)} km</div></div>
+        <div class="mg"><div class="k">Bateria</div><div class="v">${c.kwh?c.kwh+" kWh":"—"}</div></div>
+        <div class="mg"><div class="k">Eficiência</div><div class="v">${eff?eff+" Wh/km":"—"}</div></div>
+        <div class="mg"><div class="k">Potência</div><div class="v">${c.cv} cv</div></div>
+        <div class="mg"><div class="k">0–100 km/h</div><div class="v">${c.s?c.s.toFixed(1)+" s":"—"}</div></div>
+        <div class="mg"><div class="k">Recarga DC</div><div class="v">${c.dc?c.dc+" kW":"—"}</div></div>
+        <div class="mg"><div class="k">Porta-malas</div><div class="v">${c.mala?c.mala+" L":"—"}</div></div>
+        <div class="mg"><div class="k">km / R$ 1.000</div><div class="v">${c.kmrs.toFixed(2)}</div></div>
+      </div></div>
+      <div class="msec"><h3>🛞 Suspensão & conforto</h3><div class="mgrid">
+        <div class="mg"><div class="k">Dianteira</div><div class="v" style="font-size:12.5px">${c.sf}</div></div>
+        <div class="mg"><div class="k">Traseira</div><div class="v" style="font-size:12.5px">${c.sr}</div></div>
+        <div class="mg"><div class="k">Conforto 0–5</div><div class="v"><span style="color:var(--alerta)">${stars(c.susp)}</span> ${c.susp.toFixed(1)}</div></div>
+      </div></div>
+      <div class="msec"><h3>🛡️ Segurança & tecnologia</h3><div class="mgrid">
+        <div class="mg"><div class="k">Airbags</div><div class="v">${c.air??"—"}</div></div>
+        <div class="mg"><div class="k">ADAS</div><div class="v" style="font-size:12.5px">${c.adas}</div></div>
+        <div class="mg"><div class="k">Teto solar</div><div class="v" style="font-size:12.5px">${c.teto&&c.teto!=="—"?c.teto:"—"}</div></div>
+      </div>${c.tec&&c.tec.length?`<div class="mtec">${c.tec.map(t=>`<span class="tag">${t}</span>`).join("")}</div>`:""}</div>
+      <div class="msec"><h3>📄 Garantia de fábrica</h3><div class="mgrid">
+        <div class="mg"><div class="k">Veículo</div><div class="v" style="font-size:12.5px">${g[0]}</div></div>
+        <div class="mg"><div class="k">Bateria</div><div class="v" style="font-size:12.5px">${g[1]}</div></div>
+      </div></div>
+      <div class="msec"><h3>🎯 Veredito</h3><div class="mverdict">
+        ${pros.length?`<b>Pontos fortes:</b> ${pros.map(p=>`<span class="pro">✓ ${p}</span>`).join(" · ")}<br>`:""}
+        ${cons.length?`<b>Atenção:</b> ${cons.map(p=>`<span class="con">• ${p}</span>`).join(" · ")}`:"<span class='pro'>Sem ressalvas relevantes.</span>"}
+      </div></div>
+      <div class="mact">
+        <button class="cmp" onclick="toggleSel(${c.id});closeProfile();showPane('comparar')">${sel.includes(c.id)?"✓ No comparador":"+ Adicionar ao comparador"}</button>
+        <button class="cls" onclick="closeProfile()">Fechar</button>
+      </div>
+    </div>`;
+  document.getElementById('modalOv').classList.add('on');
+  el.classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeProfile(){
+  document.getElementById('modalOv').classList.remove('on');
+  document.getElementById('carModal').classList.remove('on');
+  document.body.style.overflow='';
+}
 
 /* =============== estado =============== */
 let sel=[];              // ids no comparador (máx 4)
@@ -741,9 +890,9 @@ function renderCards(){
     if(sortBy==='kmrs')return b.kmrs-a.kmrs;
     if(sortBy==='cv')return b.cv-a.cv;
   });
-  $('#countNote').textContent=list.length+' de '+CARS.length;
+  $('#countNote').textContent=list.length+' de '+CARS.length+' · toque num card para ver o perfil completo 🔍';
   $('#cards').innerHTML=list.map(c=>`
-   <article class="card ${sel.includes(c.id)?'selected':''}">
+   <article class="card ${sel.includes(c.id)?'selected':''}" data-profile="${c.id}">
      <div class="card-top">
        <div><div class="brand">${c.b} · ${c.cat}</div>
          <div class="model">${c.m}${c.v?`<small>${c.v}</small>`:''}</div></div>
@@ -776,6 +925,7 @@ function renderCards(){
      </div>
    </article>`).join('');
   document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>toggleSel(+b.dataset.add)));
+  document.querySelectorAll('[data-profile]').forEach(el=>el.addEventListener('click',e=>{if(e.target.closest('.addbtn'))return;openProfile(+el.dataset.profile);}));
 }
 
 /* =============== comparador =============== */
@@ -919,7 +1069,8 @@ function renderSim(){
   const set=v=>{document.body.classList.toggle('nav-open',v);if(t)t.setAttribute('aria-expanded',v);};
   if(t)t.addEventListener('click',()=>set(!document.body.classList.contains('nav-open')));
   if(o)o.addEventListener('click',()=>set(false));
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')set(false);});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){set(false);closeProfile();}});
+  const _mo=document.getElementById('modalOv');if(_mo)_mo.addEventListener('click',closeProfile);
 })();
 
 renderFilters();renderCards();drawScatter();updateFloat();
