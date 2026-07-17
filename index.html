@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elétricos no Brasil · Comparador 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,700;0,900;1,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ SISTEMA: "painel de instrumentos" ============
+   asfalto  #101418  fundo grafite-azulado
+   painel   #161c23  superfícies
+   linha    #2a333e  bordas
+   carga    #4fd6e8  ciano — dados / interação (luz de carregador)
+   status   #38d996  verde — nacional / isento / ok
+   alerta   #ffb454  âmbar — importado / imposto 35%
+   texto    #e9eef4 / #94a2b1
+================================================================ */
+:root{
+  --asfalto:#101418; --painel:#161c23; --painel2:#1b232c; --linha:#2a333e;
+  --carga:#4fd6e8; --carga-dim:rgba(79,214,232,.14);
+  --status:#38d996; --status-dim:rgba(56,217,150,.14);
+  --alerta:#ffb454; --alerta-dim:rgba(255,180,84,.14);
+  --texto:#e9eef4; --texto2:#94a2b1; --texto3:#5d6b7a;
+  --disp:'Archivo',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+  --r:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--asfalto);color:var(--texto);font-family:var(--disp);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font-family:var(--disp);cursor:pointer;border:none;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--carga);outline-offset:2px;border-radius:6px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+
+/* ---------- header ---------- */
+header{padding:26px 0 8px;border-bottom:1px solid var(--linha);
+  background:linear-gradient(180deg,#131a21 0%,var(--asfalto) 100%)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--carga)}
+h1{font-weight:900;font-size:clamp(26px,6vw,44px);line-height:1.04;letter-spacing:-.02em;margin:6px 0 4px}
+h1 em{font-style:italic;color:var(--carga)}
+.sub{color:var(--texto2);font-size:14px;max-width:640px}
+.tax-strip{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;
+  padding:5px 11px;border-radius:99px;border:1px solid var(--linha);color:var(--texto2)}
+.pill b{color:var(--texto);font-weight:600}
+.pill.warn{border-color:rgba(255,180,84,.45);background:var(--alerta-dim);color:var(--alerta)}
+.pill.ok{border-color:rgba(56,217,150,.45);background:var(--status-dim);color:var(--status)}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+
+/* ---------- hero: mapa do mercado ---------- */
+.hero{padding:20px 0 6px}
+.hero-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px}
+h2{font-weight:900;font-size:clamp(17px,3.4vw,22px);letter-spacing:-.01em}
+.hint{font-size:12px;color:var(--texto3);font-family:var(--mono)}
+.chart-card{background:var(--painel);border:1px solid var(--linha);border-radius:var(--r);padding:10px 6px 4px;margin-top:10px;position:relative;overflow:hidden}
+.chart-card svg{display:block;width:100%;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:14px;padding:8px 10px 10px;font-size:12px;color:var(--texto2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:11px;height:11px;border-radius:50%;flex:none}
+.tip{position:absolute;pointer-events:none;background:#0c1116;border:1px solid var(--linha);border-radius:10px;
+  padding:9px 11px;font-size:12px;line-height:1.45;max-width:230px;box-shadow:0 8px 24px rgba(0,0,0,.5);
+  opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s;z-index:5}
+.tip.show{opacity:1;transform:none}
+.tip b{font-size:13px}
+.tip .num{color:var(--carga)}
+
+/* ---------- KPIs ---------- */
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0 4px}
+@media(min-width:760px){.kpis{grid-template-columns:repeat(4,1fr)}}
+.kpi{background:var(--painel);border:1px solid var(--linha);border-radius:var(--r);padding:13px 14px}
+.kpi .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--texto3)}
+.kpi .val{font-family:var(--mono);font-weight:600;font-size:clamp(17px,4vw,21px);margin-top:3px}
+.kpi .det{font-size:11.5px;color:var(--texto2);margin-top:2px}
+.kpi.c .val{color:var(--carga)} .kpi.g .val{color:var(--status)} .kpi.a .val{color:var(--alerta)}
+
+/* ---------- tabs ---------- */
+nav.tabs{position:sticky;top:0;z-index:20;background:rgba(16,20,24,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--linha);margin-top:18px}
+.tabs .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-top:6px}
+.tabs .wrap::-webkit-scrollbar{display:none}
+.tab{flex:none;padding:11px 14px;font-weight:700;font-size:13.5px;color:var(--texto2);
+  border-bottom:2px solid transparent;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--carga);border-color:var(--carga)}
+.tab .cnt{font-family:var(--mono);font-size:10.5px;background:var(--carga-dim);color:var(--carga);
+  border-radius:99px;padding:1px 7px;margin-left:5px;vertical-align:1px}
+section.pane{display:none;padding:20px 0 10px}
+section.pane.on{display:block}
+
+/* ---------- filtros / catálogo ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.chip{padding:7px 13px;border-radius:99px;border:1px solid var(--linha);font-size:12.5px;font-weight:500;color:var(--texto2);background:var(--painel)}
+.chip[aria-pressed="true"]{border-color:var(--carga);color:var(--carga);background:var(--carga-dim)}
+.sortrow{display:flex;align-items:center;gap:8px;margin:10px 0 14px;flex-wrap:wrap}
+select{background:var(--painel);color:var(--texto);border:1px solid var(--linha);border-radius:10px;
+  padding:8px 10px;font-family:var(--disp);font-size:13px}
+.count-note{font-size:12px;color:var(--texto3);font-family:var(--mono)}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:980px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+.card{background:var(--painel);border:1px solid var(--linha);border-radius:var(--r);padding:15px 15px 13px;
+  display:flex;flex-direction:column;gap:10px;position:relative;transition:border-color .15s}
+.card:hover{border-color:#3a4654}
+.card.selected{border-color:var(--carga);box-shadow:0 0 0 1px var(--carga)}
+.card-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.brand{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--texto3)}
+.model{font-weight:900;font-size:17.5px;line-height:1.15;letter-spacing:-.01em}
+.model small{font-weight:500;color:var(--texto2);font-size:12.5px;margin-left:4px}
+.origin{font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:4px 8px;border-radius:7px;flex:none}
+.origin.nac{background:var(--status-dim);color:var(--status)}
+.origin.imp{background:var(--alerta-dim);color:var(--alerta)}
+.price{font-family:var(--mono);font-weight:600;font-size:20px;color:var(--carga)}
+.price small{font-size:11px;color:var(--texto3);font-weight:400;margin-left:2px}
+.specs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;border-top:1px dashed var(--linha);padding-top:10px}
+.spec .v{font-family:var(--mono);font-size:13.5px;font-weight:500}
+.spec .k{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--texto3);font-family:var(--mono)}
+.susp{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11.5px;
+  color:var(--texto2);border-top:1px dashed var(--linha);padding-top:9px}
+.susp .sk{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--texto3)}
+.susp .sv{text-align:right;line-height:1.3}
+.susp .st{color:var(--alerta);letter-spacing:1px}
+.susp .sn{font-family:var(--mono);color:var(--texto)}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:10.5px;padding:3px 8px;border-radius:6px;background:var(--painel2);border:1px solid var(--linha);color:var(--texto2)}
+.cb-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
+.cbscore{display:flex;align-items:center;gap:7px;flex:1;min-width:0}
+.cbbar{flex:1;height:5px;border-radius:99px;background:var(--painel2);overflow:hidden}
+.cbbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--carga),var(--status))}
+.cbnum{font-family:var(--mono);font-size:12px;color:var(--texto2);flex:none}
+.addbtn{flex:none;font-size:12px;font-weight:700;padding:7px 12px;border-radius:9px;border:1px solid var(--linha);color:var(--texto2)}
+.addbtn.in{border-color:var(--carga);color:var(--carga);background:var(--carga-dim)}
+.note{font-size:11px;color:var(--texto3);font-style:italic}
+
+/* ---------- comparador ---------- */
+.cmp-empty{border:1px dashed var(--linha);border-radius:var(--r);padding:26px 18px;text-align:center;color:var(--texto2);font-size:14px}
+.cmp-sel{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.cmp-chip{display:inline-flex;align-items:center;gap:8px;background:var(--painel);border:1px solid var(--carga);
+  color:var(--texto);border-radius:99px;padding:7px 8px 7px 13px;font-size:13px;font-weight:600}
+.cmp-chip button{color:var(--texto3);font-size:15px;line-height:1;padding:2px 6px}
+.cmp-chip button:hover{color:var(--alerta)}
+.tablewrap{overflow-x:auto;border:1px solid var(--linha);border-radius:var(--r);background:var(--painel)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:13px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--linha)}
+thead th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--texto3);background:var(--painel2)}
+tbody th{font-weight:500;color:var(--texto2);font-size:12px;white-space:nowrap}
+td{font-family:var(--mono);font-size:13px}
+td.best{color:var(--status);font-weight:600}
+td .win{font-size:9px;vertical-align:2px;margin-left:3px}
+.radar-wrap{margin-top:16px}
+
+/* ---------- ranking ---------- */
+.rank-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.bars{display:flex;flex-direction:column;gap:9px}
+.brow{display:grid;grid-template-columns:minmax(120px,180px) 1fr 62px;gap:10px;align-items:center}
+.brow .nm{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brow .nm small{display:block;font-weight:400;color:var(--texto3);font-size:10.5px;font-family:var(--mono)}
+.btrack{height:16px;background:var(--painel);border:1px solid var(--linha);border-radius:6px;overflow:hidden}
+.bfill{height:100%;border-radius:5px;background:linear-gradient(90deg,rgba(79,214,232,.55),var(--carga))}
+.bfill.nac{background:linear-gradient(90deg,rgba(56,217,150,.5),var(--status))}
+.bval{font-family:var(--mono);font-size:12px;text-align:right;color:var(--texto2)}
+
+/* ---------- simulador ---------- */
+.sim-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:860px){.sim-grid{grid-template-columns:340px 1fr}}
+.panel{background:var(--painel);border:1px solid var(--linha);border-radius:var(--r);padding:16px}
+.panel h3{font-size:14px;font-weight:700;margin-bottom:12px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--texto3);margin-bottom:5px}
+.field input{width:100%;background:var(--asfalto);border:1px solid var(--linha);border-radius:9px;
+  padding:9px 11px;color:var(--texto);font-family:var(--mono);font-size:14px}
+.sim-results{display:flex;flex-direction:column;gap:10px}
+.sim-card{background:var(--painel);border:1px solid var(--linha);border-radius:var(--r);padding:14px 16px}
+.sim-card h4{font-size:14.5px;font-weight:800}
+.sim-line{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--texto2);padding:5px 0;border-bottom:1px dashed var(--linha)}
+.sim-line:last-child{border:none}
+.sim-line .num{color:var(--texto)}
+.sim-line .num.pos{color:var(--status)} .sim-line .num.neg{color:var(--alerta)}
+
+/* ---------- mercado ---------- */
+.prose{max-width:760px;color:var(--texto2);font-size:14.5px}
+.prose h3{color:var(--texto);font-size:16px;font-weight:800;margin:20px 0 8px}
+.prose p{margin-bottom:10px}
+.prose strong{color:var(--texto)}
+.prose .mark-warn{color:var(--alerta)} .prose .mark-ok{color:var(--status)} .prose .mark-c{color:var(--carga)}
+.srcs{margin-top:22px;border-top:1px solid var(--linha);padding-top:12px;font-size:11.5px;color:var(--texto3);font-family:var(--mono);line-height:1.8}
+
+footer{margin-top:30px;border-top:1px solid var(--linha);padding:18px 0 30px;font-size:11.5px;color:var(--texto3)}
+
+/* barra flutuante do comparador */
+.floatbar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%) translateY(80px);
+  background:#0c1116;border:1px solid var(--carga);border-radius:99px;padding:9px 10px 9px 16px;
+  display:flex;align-items:center;gap:12px;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.55);
+  transition:transform .2s;z-index:40;white-space:nowrap}
+.floatbar.show{transform:translateX(-50%)}
+.floatbar b{color:var(--carga);font-family:var(--mono)}
+.floatbar .go{background:var(--carga);color:#06232a;font-weight:800;border-radius:99px;padding:8px 15px;font-size:12.5px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">⚡ Mercado brasileiro · atualizado em jul/2026</div>
+    <h1>Elétricos no Brasil:<br>o <em>mapa completo</em> de 2026</h1>
+    <p class="sub">Todos os carros 100% elétricos à venda no país, com preço de tabela, autonomia, avaliação de suspensão/conforto, custo-benefício calculado e comparação lado a lado.</p>
+    <div class="tax-strip">
+      <span class="pill warn"><span class="dot"></span> Imposto de importação: <b>35%</b> desde 01/jul</span>
+      <span class="pill ok"><span class="dot"></span> Fabricados no Brasil: <b>isentos</b></span>
+      <span class="pill">Preços "a partir de" · <b>confirme na concessionária</b></span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-head">
+      <h2>Preço × Autonomia — onde cada carro se posiciona</h2>
+      <span class="hint">toque num ponto para detalhes · quanto mais alto e à esquerda, melhor</span>
+    </div>
+    <div class="chart-card" id="scatterCard">
+      <svg id="scatter" viewBox="0 0 720 460" role="img" aria-label="Gráfico de dispersão preço por autonomia de todos os elétricos"></svg>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--status)"></i> Nacional (isento do imposto)</span>
+        <span><i class="sw" style="background:var(--alerta)"></i> Importado (35%)</span>
+        <span><i class="sw" style="background:none;border:1.5px dashed var(--carga);border-radius:99px;width:22px;height:10px"></i> zona de melhor custo-benefício</span>
+      </div>
+      <div class="tip" id="tip"></div>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist">
+  <div class="wrap">
+    <button class="tab" role="tab" aria-selected="true" data-pane="catalogo">Catálogo <span class="cnt" id="cntModels"></span></button>
+    <button class="tab" role="tab" aria-selected="false" data-pane="comparar">Comparar <span class="cnt" id="cntCmp">0</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-pane="ranking">Ranking</button>
+    <button class="tab" role="tab" aria-selected="false" data-pane="simulador">Vale a pena?</button>
+    <button class="tab" role="tab" aria-selected="false" data-pane="mercado">Mercado &amp; fontes</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ================= CATÁLOGO ================= -->
+  <section class="pane on" id="pane-catalogo">
+    <div class="filters" id="catFilters"></div>
+    <div class="filters" id="origFilters"></div>
+    <div class="sortrow">
+      <label for="sortSel" class="hint">Ordenar:</label>
+      <select id="sortSel">
+        <option value="preco">Menor preço</option>
+        <option value="cb">Melhor custo-benefício</option>
+        <option value="aut">Maior autonomia</option>
+        <option value="kmrs">Mais km por R$ 1.000</option>
+        <option value="cv">Mais potência</option>
+      </select>
+      <span class="count-note" id="countNote"></span>
+    </div>
+    <div class="grid" id="cards"></div>
+  </section>
+
+  <!-- ================= COMPARAR ================= -->
+  <section class="pane" id="pane-comparar">
+    <h2 style="margin-bottom:12px">Comparação lado a lado</h2>
+    <div id="cmpArea"></div>
+  </section>
+
+  <!-- ================= RANKING ================= -->
+  <section class="pane" id="pane-ranking">
+    <h2 style="margin-bottom:4px">Ranking de custo-benefício</h2>
+    <p class="hint" style="margin-bottom:14px">Escolha a métrica. Barras verdes = fabricação nacional.</p>
+    <div class="rank-tools" id="rankTools"></div>
+    <div class="bars" id="rankBars"></div>
+  </section>
+
+  <!-- ================= SIMULADOR ================= -->
+  <section class="pane" id="pane-simulador">
+    <h2 style="margin-bottom:4px">Vale a pena para o seu uso?</h2>
+    <p class="hint" style="margin-bottom:14px">Compare o custo de rodagem de qualquer elétrico com um carro a gasolina de referência.</p>
+    <div class="sim-grid">
+      <div class="panel">
+        <h3>Seus parâmetros</h3>
+        <div class="field"><label for="inKm">Km rodados por mês</label><input id="inKm" type="number" value="1200" min="100" step="100"></div>
+        <div class="field"><label for="inTarifa">Tarifa de energia (R$/kWh)</label><input id="inTarifa" type="number" value="0.75" min="0.1" step="0.05"></div>
+        <div class="field"><label for="inGas">Gasolina (R$/litro)</label><input id="inGas" type="number" value="6.20" min="1" step="0.10"></div>
+        <div class="field"><label for="inKmL">Consumo do carro a gasolina (km/l)</label><input id="inKmL" type="number" value="12" min="4" step="0.5"></div>
+        <div class="field"><label for="inFlex">Preço do carro a gasolina equivalente (R$)</label><input id="inFlex" type="number" value="120000" min="30000" step="5000"></div>
+      </div>
+      <div>
+        <div class="panel" style="margin-bottom:12px">
+          <h3 style="margin-bottom:8px">Resultado por carro <span class="hint">(os do seu comparador, ou o top 3 em custo-benefício)</span></h3>
+          <div class="sim-results" id="simResults"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MERCADO ================= -->
+  <section class="pane" id="pane-mercado">
+    <div class="prose">
+      <h2>O contexto que muda os preços agora</h2>
+      <h3>Imposto de importação chegou a 35% em 1º de julho de 2026</h3>
+      <p>Terminou o cronograma gradual iniciado em 2024: <strong class="mark-warn">todo eletrificado importado (BEV, PHEV e HEV) agora paga 35%</strong> — a alíquota máxima, igual à dos carros a combustão. Estimativas do setor apontam repasse de <strong>até ~8% no preço final</strong>, dependendo da marca. Muitas importadoras anteciparam lotes, então o impacto pode aparecer aos poucos, conforme os estoques acabam.</p>
+      <h3>Quem escapa: produção nacional</h3>
+      <p><strong class="mark-ok">BYD (Camaçari-BA)</strong> já produz o Dolphin Mini no país; o <strong class="mark-ok">Chevrolet Spark EUV</strong> é montado no Brasil; a GWM opera em Iracemápolis-SP. <strong class="mark-c">Geely</strong> anunciou produção do EX2 na fábrica da Renault em São José dos Pinhais-PR e a <strong class="mark-c">Leapmotor</strong> (Stellantis) confirmou nacionalização do B10 — quando isso se concretizar, esses modelos tendem a segurar ou baixar preço enquanto os 100% importados sobem. Para kits CKD/SKD montados aqui, a alíquota cheia só chega em jan/2027.</p>
+      <h3>Como ler este dashboard</h3>
+      <p>Preços são de tabela ("a partir de"), coletados em julho/2026 — promoções mensais (como as da BYD) mudam rápido. A autonomia usa o <strong>ciclo Inmetro (PBEV)</strong> quando disponível; onde só há número divulgado pela marca (ciclos CLTC/WLTP, mais otimistas), aplicamos um <strong>ajuste de −22%</strong> para estimar o equivalente Inmetro e manter a comparação justa — esses valores aparecem com "≈/estim.". O score de custo-benefício pondera km por R$ 1.000 (45%), potência por R$ 1.000 (20%), autonomia absoluta (20%) e velocidade de recarga DC (15%), normalizados entre os modelos listados.</p>
+      <h3>Como lemos a suspensão (nota de conforto/rodagem 0–5 ★)</h3>
+      <p>Cada modelo traz a arquitetura real de suspensão <strong>dianteira / traseira</strong> e uma nota de conforto de 0 a 5. A lógica: eixo traseiro <strong class="mark-c">independente (multibraços)</strong> filtra melhor buracos e mantém as rodas alinhadas em curva, tendendo a nota mais alta; <strong class="mark-warn">barra/eixo de torção</strong> (semi-independente) é mais simples e comum nos urbanos de entrada. A nota também considera o acerto conhecido de cada carro e o segmento. Um caso ilustrativo: o novo <strong>MG4 Urban</strong> troca o multibraços do MG4 tradicional por <strong>eixo de torção</strong> para liberar espaço e porta-malas (477 L) — por isso fica em 3,4, enquanto o MG4 "cheio" marca 4,2. <em>É uma orientação comparativa, não um teste instrumentado — faça o test-drive.</em></p>
+      <h3>Dicas rápidas de comprador</h3>
+      <p>Garantia de bateria é quase padrão em <strong>8 anos</strong> (verifique o limite de km — Geely limita a 150 mil). Alguns pacotes de lançamento incluem extras relevantes: o GAC Aion UT sai com <strong>wallbox grátis + 1º ano de seguro</strong>. IPVA para elétricos varia por estado — em Sergipe confirme a alíquota vigente antes de fechar a conta. E se o modelo é importado, pergunte à concessionária se o preço cotado já reflete o lote pós-35%.</p>
+      <div class="srcs">
+        FONTES · jul/2026: eletricos.app (catálogo e imposto) · primeirocarroeletrico.com.br (tabela de modelos) · autopapo.com.br + dgabc.com.br + carrosnaweb.com.br (MG4 Urban: 3 versões, R$ 129.990–149.990, suspensão por eixo de torção, 0-100 9,5–9,6 s) · Webmotors + acritica.net (Leapmotor B10, R$ 182.990) · Vrum/Diários Associados (linha Dolphin 13/07) · Auto+ TV (promo Dolphin Mini GL; lançamento Aion UT) · car.blog.br (EX2 Pro/Max; vigência do imposto 01/07) · DCI (5 mais baratos jul/26) · CartaCapital/Terra (alíquotas). Arquitetura de suspensão conforme fichas técnicas das montadoras; nota de conforto é avaliação editorial comparativa. Valores sujeitos a alteração sem aviso.
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="floatbar" id="floatbar">
+  <span><b id="fbN">0</b> para comparar</span>
+  <button class="go" id="fbGo">Comparar agora</button>
+</div>
+
+<footer>
+  <div class="wrap">Comparador de elétricos · Brasil · dados coletados em 15/07/2026 · uso pessoal — não substitui cotação oficial das montadoras.</div>
+</footer>
+<script>
+/* =============== DADOS · jul/2026 · preços "a partir de" =============== */
+/* ciclo: 'i' = Inmetro (PBEV) | 'd' = divulgado pela marca (CLTC/WLTP, otimista)
+   susp: nota de conforto/rodagem 0–5 (arquitetura + acerto conhecido)
+   sf = suspensão dianteira · sr = suspensão traseira                            */
+const CARS=[
+{b:'Renault',m:'Kwid E-Tech',v:'',p:99990,kwh:26.8,km:180,ci:'i',cv:65,s:null,dc:30,mala:290,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:2.8,tags:['Rede Renault ampla'],nota:'Mais barato do país'},
+{b:'BYD',m:'Dolphin Mini',v:'GL',p:109990,kwh:30,km:224,ci:'i',cv:75,s:null,dc:30,mala:230,o:'N',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.0,tags:['Bateria Blade LFP','Promo julho (tabela R$ 118.990)']},
+{b:'BYD',m:'Dolphin Mini',v:'GS',p:119990,kwh:38,km:280,ci:'i',cv:75,s:null,dc:30,mala:230,o:'N',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.0,tags:['Bateria Blade LFP','Multimídia giratória']},
+{b:'JAC',m:'E-JS1',v:'',p:119900,kwh:30.2,km:181,ci:'i',cv:62,s:null,dc:null,mala:null,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:2.7,tags:['Veterano do segmento']},
+{b:'Caoa Chery',m:'iCar',v:'',p:119990,kwh:26,km:197,ci:'i',cv:61,s:null,dc:null,mala:null,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:2.6,tags:['Micro urbano ágil']},
+{b:'Geely',m:'EX2',v:'Pro',p:123800,kwh:39.4,km:289,ci:'i',cv:116,s:10.2,dc:null,mala:375,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.2,tags:['Tração traseira','Frunk 70 L','Garantia 6a/150 mil km'],nota:'Produção nacional anunciada (Renault-PR)'},
+{b:'Geely',m:'EX2',v:'Max',p:136800,kwh:39.4,km:289,ci:'i',cv:116,s:10.2,dc:null,mala:375,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.2,tags:['Câmera 540°','Carregador por indução','Rodas liga 16"']},
+{b:'Neta',m:'Aya',v:'',p:124900,kwh:40,km:263,ci:'d',cv:95,s:null,dc:null,mala:null,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.0,tags:[]},
+{b:'MG',m:'MG4 Urban',v:'Comfort 43',p:129990,kwh:43,km:299,ci:'i',cv:150,s:9.6,dc:87,mala:477,o:'I',cat:'Hatch',sf:'McPherson',sr:'Eixo de torção',susp:3.4,tags:['Bateria LFP 43 kWh','7 airbags','Central 12,8"','15 funções ADAS'],nota:'Porta de entrada da MG · rear por eixo de torção (mais simples que o MG4 multibraços)'},
+{b:'MG',m:'MG4 Urban',v:'Luxury 43',p:139990,kwh:43,km:299,ci:'i',cv:150,s:9.6,dc:87,mala:477,o:'I',cat:'Hatch',sf:'McPherson',sr:'Eixo de torção',susp:3.4,tags:['Bateria LFP 43 kWh','Acabamento Luxury','Câmera de ré','ADAS completo']},
+{b:'MG',m:'MG4 Urban',v:'Luxury 54',p:149990,kwh:54,km:358,ci:'i',cv:160,s:9.5,dc:87,mala:477,o:'I',cat:'Hatch',sf:'McPherson',sr:'Eixo de torção',susp:3.4,tags:['Bateria 54 kWh','358 km Inmetro','160 cv','Topo de linha'],nota:'Maior autonomia da linha Urban'},
+{b:'GAC',m:'Aion UT',v:'Premium',p:139990,kwh:44.1,km:253,ci:'i',cv:204,s:8.6,dc:87,mala:340,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.3,tags:['Wallbox grátis','Seguro 1º ano','Câmera 360°','V2L']},
+{b:'Chevrolet',m:'Spark EUV',v:'',p:144990,kwh:42,km:258,ci:'i',cv:102,s:null,dc:null,mala:355,o:'N',cat:'SUV compacto',sf:'McPherson',sr:'Barra de torção',susp:3.2,tags:['6 airbags','ACC + câmera 360°','Rede Chevrolet']},
+{b:'BYD',m:'Dolphin',v:'GS',p:149990,kwh:44.9,km:291,ci:'i',cv:95,s:10.9,dc:60,mala:345,o:'N',cat:'Hatch',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['Faróis LED','Tela giratória']},
+{b:'GWM',m:'Ora 03',v:'Skin',p:150000,kwh:48,km:315,ci:'i',cv:171,s:null,dc:null,mala:228,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['Design retrô','Foco em segurança']},
+{b:'BYD',m:'Dolphin',v:'SE',p:159990,kwh:45.1,km:272,ci:'i',cv:177,s:8.0,dc:80,mala:345,o:'N',cat:'Hatch',sf:'McPherson',sr:'Multibraços',susp:3.7,tags:['ADAS nível 2','Facelift 2026','Estepe']},
+{b:'GAC',m:'Aion UT',v:'Elite',p:159990,kwh:60,km:310,ci:'i',cv:204,s:7.3,dc:87,mala:340,o:'I',cat:'Hatch',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['ADAS nível 2 (11 funções)','V2L','Wallbox + seguro 1º ano']},
+{b:'MG',m:'MG4',v:'',p:169990,kwh:51,km:364,ci:'d',cv:204,s:7.7,dc:88,mala:363,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços (5 braços)',susp:4.2,tags:['Tração traseira','Rear multibraços — dirigibilidade premiada']},
+{b:'GAC',m:'Aion ES',v:'',p:170990,kwh:55,km:314,ci:'d',cv:136,s:null,dc:null,mala:null,o:'I',cat:'Sedã',sf:'McPherson',sr:'Barra de torção',susp:3.1,tags:['Foco em frotas/apps']},
+{b:'Leapmotor',m:'B10',v:'',p:172990,kwh:56.2,km:288,ci:'i',cv:218,s:7.3,dc:168,mala:430,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['Grupo Stellantis','Plataforma LEAP 3.5','ADAS completo','50% em 15 min'],nota:'Nacionalização anunciada; lançou a R$ 182.990 (PcD R$ 161.390)'},
+{b:'GAC',m:'Aion Y',v:'',p:175990,kwh:63,km:318,ci:'d',cv:204,s:null,dc:null,mala:null,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:['Bateria LFP','Espaço interno']},
+{b:'BYD',m:'Dolphin',v:'Plus',p:184800,kwh:60.5,km:427,ci:'i',cv:204,s:7.0,dc:80,mala:345,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['Teto solar','Bancos elétricos','Rodas 17"']},
+{b:'BYD',m:'Yuan Plus',v:'',p:189800,kwh:60.5,km:380,ci:'d',cv:204,s:7.3,dc:80,mala:440,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.7,tags:['Interior "academia"']},
+{b:'MG',m:'MG4',v:'Long Range',p:189990,kwh:64,km:435,ci:'d',cv:204,s:7.9,dc:140,mala:363,o:'I',cat:'Hatch',sf:'McPherson',sr:'Multibraços (5 braços)',susp:4.2,tags:['Maior autonomia MG4','Rear multibraços']},
+{b:'Zeekr',m:'X',v:'',p:189990,kwh:66,km:440,ci:'d',cv:272,s:null,dc:null,mala:null,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['Premium (grupo Geely)']},
+{b:'Honda',m:'e:NP1',v:'',p:199990,kwh:68.8,km:412,ci:'d',cv:204,s:null,dc:null,mala:null,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['Confiabilidade Honda']},
+{b:'Neta',m:'X',v:'500',p:204900,kwh:52,km:317,ci:'d',cv:163,s:null,dc:null,mala:null,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.6,tags:[]},
+{b:'Leapmotor',m:'C10',v:'',p:204990,kwh:69.9,km:338,ci:'i',cv:218,s:null,dc:null,mala:435,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['Grupo Stellantis']},
+{b:'Geely',m:'EX5',v:'Pro',p:205800,kwh:60.2,km:413,ci:'i',cv:218,s:6.9,dc:null,mala:null,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['413 km Inmetro — líder da faixa','32,6 kgfm']},
+{b:'Omoda',m:'E5',v:'',p:209990,kwh:61,km:345,ci:'i',cv:204,s:null,dc:80,mala:380,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.7,tags:['Visual futurista']},
+{b:'GAC',m:'Aion V',v:'',p:214990,kwh:75,km:389,ci:'d',cv:204,s:null,dc:null,mala:null,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:['"Melhor Compra 2025"']},
+{b:'MG',m:'S5',v:'',p:218800,kwh:62,km:351,ci:'d',cv:205,s:null,dc:null,mala:453,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:3.8,tags:[]},
+{b:'Smart',m:'#1',v:'',p:219990,kwh:66,km:440,ci:'d',cv:272,s:6.7,dc:150,mala:313,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.1,tags:['Premium (Mercedes/Geely)']},
+{b:'Volvo',m:'EX30',v:'Single Ext.',p:229990,kwh:69,km:344,ci:'i',cv:272,s:5.3,dc:153,mala:318,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.2,tags:['0-100 em 5,3 s','Segurança Volvo']},
+{b:'Fiat',m:'500e',v:'',p:239990,kwh:42,km:227,ci:'i',cv:118,s:9.0,dc:85,mala:185,o:'I',cat:'Urbano',sf:'McPherson',sr:'Barra de torção',susp:3.3,tags:['Ícone de design']},
+{b:'Nissan',m:'Leaf',v:'nova geração',p:239990,kwh:null,km:385,ci:'d',cv:218,s:null,dc:150,mala:null,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:3.9,tags:['Pioneiro reinventado']},
+{b:'Peugeot',m:'e-2008',v:'GT',p:249990,kwh:54,km:261,ci:'i',cv:156,s:9.1,dc:100,mala:434,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Barra de torção',susp:3.4,tags:['i-Cockpit']},
+{b:'BYD',m:'Seal',v:'',p:259800,kwh:82.5,km:570,ci:'d',cv:313,s:5.9,dc:150,mala:400,o:'I',cat:'Sedã',sf:'Duplo braço',sr:'Multibraços',susp:4.4,tags:['Sedã esportivo']},
+{b:'Mini',m:'Cooper SE',v:'',p:259990,kwh:54.2,km:305,ci:'d',cv:218,s:6.7,dc:95,mala:210,o:'I',cat:'Urbano',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['Go-kart feeling']},
+{b:'Tesla',m:'Model 3',v:'',p:279990,kwh:60,km:510,ci:'d',cv:283,s:6.1,dc:170,mala:594,o:'I',cat:'Sedã',sf:'Duplo braço',sr:'Multibraços',susp:4.3,tags:['Rede Supercharger']},
+{b:'Chevrolet',m:'Equinox EV',v:'',p:299990,kwh:85,km:513,ci:'d',cv:290,s:null,dc:150,mala:null,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.0,tags:['Maior rede do Brasil']},
+{b:'Tesla',m:'Model Y',v:'',p:319990,kwh:null,km:455,ci:'d',cv:299,s:5.9,dc:250,mala:null,o:'I',cat:'SUV médio',sf:'Duplo braço',sr:'Multibraços',susp:4.2,tags:['SUV mais vendido do mundo']},
+{b:'Volvo',m:'EX40',v:'Twin',p:329990,kwh:78,km:438,ci:'d',cv:408,s:4.8,dc:null,mala:410,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['Tração integral']},
+{b:'BMW',m:'iX1',v:'',p:339990,kwh:64.7,km:440,ci:'d',cv:313,s:5.6,dc:130,mala:490,o:'I',cat:'SUV compacto',sf:'McPherson',sr:'Multibraços',susp:4.3,tags:['DNA BMW']},
+{b:'Hyundai',m:'Ioniq 5',v:'',p:339990,kwh:77.4,km:480,ci:'d',cv:325,s:5.3,dc:233,mala:527,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.4,tags:['Arquitetura 800 V — recarga ultrarrápida']},
+{b:'Kia',m:'EV6',v:'',p:349990,kwh:77.4,km:506,ci:'d',cv:325,s:5.2,dc:233,mala:480,o:'I',cat:'SUV médio',sf:'McPherson',sr:'Multibraços',susp:4.4,tags:['800 V','World Car of the Year']},
+{b:'BYD',m:'Han EV',v:'',p:429800,kwh:85.4,km:521,ci:'d',cv:517,s:3.9,dc:120,mala:410,o:'I',cat:'Sedã',sf:'Duplo braço',sr:'Multibraços',susp:4.5,tags:['Executivo 517 cv']},
+{b:'MG',m:'Cyberster',v:'',p:499800,kwh:77,km:342,ci:'d',cv:510,s:3.2,dc:null,mala:null,o:'I',cat:'Esportivo',sf:'Duplo braço',sr:'Multibraços',susp:4.3,tags:['Único roadster elétrico do país']}
+];
+
+/* =============== métricas derivadas =============== */
+CARS.forEach((c,i)=>{c.id=i;c.kmA=c.ci==='i'?c.km:Math.round(c.km*0.78);c.kmrs=c.kmA/(c.p/1000);c.cvrs=c.cv/(c.p/1000);});
+const mm=k=>{const v=CARS.map(c=>c[k]).filter(x=>x!=null);return[Math.min(...v),Math.max(...v)]};
+const [kmrsL,kmrsH]=mm('kmrs'),[cvrsL,cvrsH]=mm('cvrs'),[autL,autH]=mm('kmA'),[dcL,dcH]=[30,250];
+const nrm=(v,l,h)=>Math.max(0,Math.min(1,(v-l)/(h-l)));
+CARS.forEach(c=>{
+  c.score=Math.round(100*(0.45*nrm(c.kmrs,kmrsL,kmrsH)+0.20*nrm(c.cvrs,cvrsL,cvrsH)+0.20*nrm(c.kmA,autL,autH)+0.15*nrm(c.dc??28,dcL,dcH)));
+});
+const scoreH=Math.max(...CARS.map(c=>c.score));
+
+const fmtR=n=>'R$ '+n.toLocaleString('pt-BR');
+const fmtK=n=>n.toLocaleString('pt-BR');
+const name=c=>c.b+' '+c.m+(c.v?' '+c.v:'');
+const cyc=c=>c.ci==='i'?'':'≈';
+const kmLbl=c=>c.ci==='i'?'Inmetro':'estim.';
+const stars=v=>{if(v==null)return'—';const f=Math.round(v);return'★'.repeat(f)+'☆'.repeat(5-f);};
+
+/* =============== estado =============== */
+let sel=[];              // ids no comparador (máx 4)
+let fCat=new Set();      // filtros categoria
+let fOrig='T';           // T | N | I
+let sortBy='preco';
+const $=q=>document.querySelector(q);
+const CATS=[...new Set(CARS.map(c=>c.cat))];
+const PAL=['#4fd6e8','#38d996','#ffb454','#b48cff'];
+
+/* =============== tabs =============== */
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>showPane(t.dataset.pane)));
+function showPane(p){
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.pane===p));
+  document.querySelectorAll('.pane').forEach(s=>s.classList.toggle('on',s.id==='pane-'+p));
+  if(p==='comparar')renderCmp();
+  if(p==='ranking')renderRank();
+  if(p==='simulador')renderSim();
+  updateFloat();
+  window.scrollTo({top:document.querySelector('nav.tabs').offsetTop-6,behavior:'smooth'});
+}
+
+/* =============== seleção p/ comparar =============== */
+function toggleSel(id){
+  const i=sel.indexOf(id);
+  if(i>=0)sel.splice(i,1);
+  else{if(sel.length>=4){alert('Máximo de 4 carros na comparação. Remova um antes de adicionar.');return;}sel.push(id);}
+  $('#cntCmp').textContent=sel.length;
+  renderCards();drawScatter();updateFloat();
+  if($('#pane-comparar').classList.contains('on'))renderCmp();
+}
+function updateFloat(){
+  const onCmp=$('#pane-comparar').classList.contains('on');
+  $('#fbN').textContent=sel.length;
+  $('#floatbar').classList.toggle('show',sel.length>0&&!onCmp);
+}
+$('#fbGo').addEventListener('click',()=>showPane('comparar'));
+
+/* =============== KPIs =============== */
+(function(){
+  const cheap=[...CARS].sort((a,b)=>a.p-b.p)[0];
+  const kmChamp=[...CARS].sort((a,b)=>b.kmrs-a.kmrs)[0];
+  const autChamp=[...CARS].sort((a,b)=>b.kmA-a.kmA)[0];
+  const nac=CARS.filter(c=>c.o==='N').length;
+  $('#kpis').innerHTML=`
+   <div class="kpi c"><div class="lbl">Modelos/versões</div><div class="val">${CARS.length}</div><div class="det">${nac} com fabricação nacional</div></div>
+   <div class="kpi g"><div class="lbl">Mais barato</div><div class="val">${fmtR(cheap.p)}</div><div class="det">${name(cheap)}</div></div>
+   <div class="kpi c"><div class="lbl">Mais km por R$ 1.000</div><div class="val">${kmChamp.kmrs.toFixed(2)} km</div><div class="det">${name(kmChamp)}</div></div>
+   <div class="kpi a"><div class="lbl">Maior autonomia (comparável)</div><div class="val">${cyc(autChamp)}${fmtK(autChamp.kmA)} km</div><div class="det">${name(autChamp)}</div></div>`;
+  $('#cntModels').textContent=CARS.length;
+})();
+
+/* =============== HERO scatter (SVG) =============== */
+const SW=720,SH=460,PAD={l:58,r:16,t:16,b:44};
+const X=p=>PAD.l+ (Math.min(p,510000)-90000)/(510000-90000)*(SW-PAD.l-PAD.r);
+const Y=k=>SH-PAD.b-(Math.min(k,600)-150)/(600-150)*(SH-PAD.t-PAD.b);
+function drawScatter(){
+  const s=$('#scatter');const NS='http://www.w3.org/2000/svg';
+  const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+  s.innerHTML='';
+  // grid + eixos
+  [100,200,300,400,500].forEach(v=>{
+    const x=X(v*1000);
+    s.appendChild(el('line',{x1:x,y1:PAD.t,x2:x,y2:SH-PAD.b,stroke:'#1e262f','stroke-width':1}));
+    const t=el('text',{x:x,y:SH-PAD.b+18,fill:'#5d6b7a','font-size':11,'text-anchor':'middle','font-family':'IBM Plex Mono,monospace'});
+    t.textContent='R$ '+v+'k';s.appendChild(t);
+  });
+  [200,300,400,500,600].forEach(v=>{
+    const y=Y(v);
+    s.appendChild(el('line',{x1:PAD.l,y1:y,x2:SW-PAD.r,y2:y,stroke:'#1e262f','stroke-width':1}));
+    const t=el('text',{x:PAD.l-8,y:y+4,fill:'#5d6b7a','font-size':11,'text-anchor':'end','font-family':'IBM Plex Mono,monospace'});
+    t.textContent=v;s.appendChild(t);
+  });
+  const yl=el('text',{x:14,y:PAD.t+10,fill:'#94a2b1','font-size':11,'font-family':'IBM Plex Mono,monospace'});
+  yl.textContent='km';s.appendChild(yl);
+  // zona custo-benefício (alto km, baixo preço)
+  s.appendChild(el('ellipse',{cx:X(150000),cy:Y(390),rx:118,ry:96,fill:'rgba(79,214,232,.05)',stroke:'#4fd6e8','stroke-dasharray':'5 5','stroke-width':1.3}));
+  const zl=el('text',{x:X(150000),y:Y(390)-104,fill:'#4fd6e8','font-size':11,'text-anchor':'middle','font-family':'IBM Plex Mono,monospace'});
+  zl.textContent='melhor custo-benefício';s.appendChild(zl);
+  // pontos
+  CARS.forEach(c=>{
+    const r=5+6*nrm(c.cv,60,520);
+    const g=el('g',{cursor:'pointer',tabindex:0,role:'button','aria-label':name(c)});
+    const dot=el('circle',{cx:X(c.p),cy:Y(c.kmA),r:r,fill:c.o==='N'?'#38d996':'#ffb454','fill-opacity':.85,stroke:'#101418','stroke-width':1.5});
+    if(sel.includes(c.id)){dot.setAttribute('stroke','#4fd6e8');dot.setAttribute('stroke-width',2.6);}
+    g.appendChild(dot);
+    const show=(ev)=>{
+      const tip=$('#tip'),card=$('#scatterCard'),rect=card.getBoundingClientRect();
+      const pt=ev.touches?ev.touches[0]:ev;
+      tip.innerHTML=`<b>${name(c)}</b><br><span class="num">${fmtR(c.p)}</span> · ${cyc(c)}${c.kmA} km (${kmLbl(c)})<br>${c.cv} cv · score <span class="num">${c.score}</span><br><span style="color:#5d6b7a">${sel.includes(c.id)?'✓ no comparador — toque p/ remover':'toque p/ comparar'}</span>`;
+      let tx=(pt.clientX-rect.left)+12, ty=(pt.clientY-rect.top)-10;
+      tx=Math.min(tx,rect.width-240);ty=Math.max(ty,6);
+      tip.style.left=tx+'px';tip.style.top=ty+'px';tip.classList.add('show');
+      clearTimeout(tip._t);tip._t=setTimeout(()=>tip.classList.remove('show'),2600);
+    };
+    g.addEventListener('click',ev=>{show(ev);toggleSel(c.id);});
+    g.addEventListener('mousemove',show);
+    g.addEventListener('mouseleave',()=>$('#tip').classList.remove('show'));
+    g.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();toggleSel(c.id);}});
+    s.appendChild(g);
+  });
+}
+
+/* =============== catálogo =============== */
+function renderFilters(){
+  $('#catFilters').innerHTML=CATS.map(c=>`<button class="chip" aria-pressed="${fCat.has(c)}" data-cat="${c}">${c}</button>`).join('');
+  $('#origFilters').innerHTML=[['T','Todas as origens'],['N','🇧🇷 Nacional'],['I','Importado (35%)']]
+    .map(([k,l])=>`<button class="chip" aria-pressed="${fOrig===k}" data-orig="${k}">${l}</button>`).join('');
+  document.querySelectorAll('[data-cat]').forEach(b=>b.addEventListener('click',()=>{
+    const c=b.dataset.cat;fCat.has(c)?fCat.delete(c):fCat.add(c);renderFilters();renderCards();}));
+  document.querySelectorAll('[data-orig]').forEach(b=>b.addEventListener('click',()=>{fOrig=b.dataset.orig;renderFilters();renderCards();}));
+}
+$('#sortSel').addEventListener('change',e=>{sortBy=e.target.value;renderCards();});
+
+function visible(){
+  return CARS.filter(c=>(fCat.size===0||fCat.has(c.cat))&&(fOrig==='T'||c.o===fOrig));
+}
+function renderCards(){
+  const list=visible().sort((a,b)=>{
+    if(sortBy==='preco')return a.p-b.p;
+    if(sortBy==='cb')return b.score-a.score;
+    if(sortBy==='aut')return b.km-a.km;
+    if(sortBy==='kmrs')return b.kmrs-a.kmrs;
+    if(sortBy==='cv')return b.cv-a.cv;
+  });
+  $('#countNote').textContent=list.length+' de '+CARS.length;
+  $('#cards').innerHTML=list.map(c=>`
+   <article class="card ${sel.includes(c.id)?'selected':''}">
+     <div class="card-top">
+       <div><div class="brand">${c.b} · ${c.cat}</div>
+         <div class="model">${c.m}${c.v?`<small>${c.v}</small>`:''}</div></div>
+       <span class="origin ${c.o==='N'?'nac':'imp'}">${c.o==='N'?'NACIONAL':'IMPORTADO'}</span>
+     </div>
+     <div class="price">${fmtR(c.p)}<small>a partir de</small></div>
+     <div class="specs">
+       <div class="spec"><div class="v">${cyc(c)}${fmtK(c.kmA)}</div><div class="k">km ${kmLbl(c)}</div></div>
+       <div class="spec"><div class="v">${c.cv}</div><div class="k">cv</div></div>
+       <div class="spec"><div class="v">${c.kwh??'—'}</div><div class="k">kWh</div></div>
+       <div class="spec"><div class="v">${c.dc?c.dc+' kW':'—'}</div><div class="k">DC ráp.</div></div>
+     </div>
+     <div class="susp">
+       <span class="sk">Suspensão</span>
+       <span class="sv">${c.sf} / ${c.sr}<br><span class="st">${stars(c.susp)}</span> <span class="sn">${c.susp.toFixed(1)}</span></span>
+     </div>
+     ${c.tags.length?`<div class="tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}
+     ${c.nota?`<div class="note">${c.nota}</div>`:''}
+     <div class="cb-row">
+       <div class="cbscore"><div class="cbbar"><i style="width:${c.score/scoreH*100}%"></i></div><span class="cbnum">CB ${c.score}</span></div>
+       <button class="addbtn ${sel.includes(c.id)?'in':''}" data-add="${c.id}">${sel.includes(c.id)?'✓ Comparando':'+ Comparar'}</button>
+     </div>
+   </article>`).join('');
+  document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>toggleSel(+b.dataset.add)));
+}
+
+/* =============== comparador =============== */
+function renderCmp(){
+  const area=$('#cmpArea');
+  if(sel.length===0){
+    area.innerHTML=`<div class="cmp-empty">Nenhum carro selecionado ainda.<br>Volte ao <b>Catálogo</b> ou toque nos pontos do gráfico e adicione até 4 carros com <b>+ Comparar</b>.</div>`;
+    return;
+  }
+  const cs=sel.map(id=>CARS[id]);
+  const rows=[
+    ['Preço (a partir de)',c=>c.p,c=>fmtR(c.p),'min'],
+    ['Autonomia',c=>c.kmA,c=>cyc(c)+fmtK(c.kmA)+' km ('+kmLbl(c)+')','max'],
+    ['km por R$ 1.000',c=>c.kmrs,c=>c.kmrs.toFixed(2),'max'],
+    ['Bateria',c=>c.kwh,c=>c.kwh?c.kwh+' kWh':'—','max'],
+    ['Potência',c=>c.cv,c=>c.cv+' cv','max'],
+    ['0–100 km/h',c=>c.s,c=>c.s?c.s.toFixed(1)+' s':'—','min'],
+    ['Recarga rápida DC',c=>c.dc,c=>c.dc?c.dc+' kW':'—','max'],
+    ['Porta-malas',c=>c.mala,c=>c.mala?c.mala+' L':'—','max'],
+    ['Suspensão dianteira',null,c=>c.sf||'—',null],
+    ['Suspensão traseira',null,c=>c.sr||'—',null],
+    ['Conforto / rodagem',c=>c.susp,c=>c.susp?stars(c.susp)+' '+c.susp.toFixed(1):'—','max'],
+    ['Origem',null,c=>c.o==='N'?'🇧🇷 Nacional':'Importado',null],
+    ['Score custo-benefício',c=>c.score,c=>c.score+' / 100','max'],
+  ];
+  let html=`<div class="cmp-sel">${cs.map(c=>`<span class="cmp-chip">${name(c)}<button aria-label="remover" data-rm="${c.id}">✕</button></span>`).join('')}</div>`;
+  html+=`<div class="tablewrap"><table><thead><tr><th></th>${cs.map(c=>`<th>${name(c)}</th>`).join('')}</tr></thead><tbody>`;
+  rows.forEach(([lbl,val,fmt,dir])=>{
+    let bestI=-1;
+    if(val&&dir){
+      const vs=cs.map(c=>val(c));
+      const cand=vs.map((v,i)=>v==null?null:v);
+      const ok=cand.filter(v=>v!=null);
+      if(ok.length){
+        const best=dir==='min'?Math.min(...ok):Math.max(...ok);
+        bestI=cand.indexOf(best);
+        if(cand.filter(v=>v===best).length>1)bestI=-1; /* empate: sem destaque */
+      }
+    }
+    html+=`<tr><th>${lbl}</th>${cs.map((c,i)=>`<td class="${i===bestI?'best':''}">${fmt(c)}${i===bestI?'<span class="win">▲</span>':''}</td>`).join('')}</tr>`;
+  });
+  html+=`</tbody></table></div>`;
+  html+=`<div class="radar-wrap chart-card"><svg id="radar" viewBox="0 0 640 400" role="img" aria-label="Radar comparativo"></svg>
+    <div class="legend">${cs.map((c,i)=>`<span><i class="sw" style="background:${PAL[i]}"></i>${name(c)}</span>`).join('')}</div></div>`;
+  area.innerHTML=html;
+  document.querySelectorAll('[data-rm]').forEach(b=>b.addEventListener('click',()=>toggleSel(+b.dataset.rm)));
+  drawRadar(cs);
+}
+function drawRadar(cs){
+  const s=$('#radar');if(!s)return;const NS='http://www.w3.org/2000/svg';
+  const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+  s.innerHTML='';
+  const cx=320,cyy=205,R=140;
+  const axes=[
+    ['Autonomia',c=>nrm(c.kmA,autL,autH)],
+    ['Potência',c=>nrm(c.cv,60,520)],
+    ['Recarga DC',c=>nrm(c.dc??28,dcL,dcH)],
+    ['Preço acessível',c=>1-nrm(c.p,90000,510000)],
+    ['km/R$1.000',c=>nrm(c.kmrs,kmrsL,kmrsH)],
+    ['Conforto susp.',c=>nrm(c.susp??3,2.5,4.5)],
+  ];
+  const ang=i=>-Math.PI/2+i*2*Math.PI/axes.length;
+  [0.33,0.66,1].forEach(f=>{
+    const pts=axes.map((_,i)=>`${cx+R*f*Math.cos(ang(i))},${cyy+R*f*Math.sin(ang(i))}`).join(' ');
+    s.appendChild(el('polygon',{points:pts,fill:'none',stroke:'#232c36','stroke-width':1}));
+  });
+  axes.forEach((a,i)=>{
+    const x=cx+R*Math.cos(ang(i)),y=cyy+R*Math.sin(ang(i));
+    s.appendChild(el('line',{x1:cx,y1:cyy,x2:x,y2:y,stroke:'#232c36'}));
+    const t=el('text',{x:cx+(R+22)*Math.cos(ang(i)),y:cyy+(R+22)*Math.sin(ang(i))+4,fill:'#94a2b1','font-size':11.5,'text-anchor':'middle','font-family':'IBM Plex Mono,monospace'});
+    t.textContent=a[0];s.appendChild(t);
+  });
+  cs.forEach((c,ci)=>{
+    const pts=axes.map((a,i)=>{const v=Math.max(.04,a[1](c));return`${cx+R*v*Math.cos(ang(i))},${cyy+R*v*Math.sin(ang(i))}`}).join(' ');
+    s.appendChild(el('polygon',{points:pts,fill:PAL[ci],'fill-opacity':.10,stroke:PAL[ci],'stroke-width':2}));
+  });
+}
+
+/* =============== ranking =============== */
+let rankMetric='score';
+const RM=[['score','Score CB'],['kmrs','km por R$ 1.000'],['cvrs','cv por R$ 1.000'],['km','Autonomia'],['susp','Conforto susp.'],['preco','Menor preço']];
+function renderRank(){
+  $('#rankTools').innerHTML=RM.map(([k,l])=>`<button class="chip" aria-pressed="${rankMetric===k}" data-rk="${k}">${l}</button>`).join('');
+  document.querySelectorAll('[data-rk]').forEach(b=>b.addEventListener('click',()=>{rankMetric=b.dataset.rk;renderRank();}));
+  let list=[...CARS];
+  let get,fmt;
+  if(rankMetric==='score'){get=c=>c.score;fmt=v=>v+' /100';}
+  if(rankMetric==='kmrs'){get=c=>c.kmrs;fmt=v=>v.toFixed(2);}
+  if(rankMetric==='cvrs'){get=c=>c.cvrs;fmt=v=>v.toFixed(2);}
+  if(rankMetric==='km'){get=c=>c.kmA;fmt=v=>fmtK(v)+' km';}
+  if(rankMetric==='susp'){get=c=>c.susp;fmt=v=>stars(v)+' '+v.toFixed(1);}
+  if(rankMetric==='preco'){get=c=>c.p;fmt=v=>fmtR(v);}
+  list.sort((a,b)=>rankMetric==='preco'?get(a)-get(b):get(b)-get(a));
+  list=list.slice(0,15);
+  const max=Math.max(...list.map(get)),min=Math.min(...list.map(get));
+  $('#rankBars').innerHTML=list.map((c,i)=>{
+    const v=get(c);
+    const w=rankMetric==='preco'?(min/v*100):(v/max*100);
+    return`<div class="brow">
+      <div class="nm">${i+1}. ${c.b} ${c.m}${c.v?' '+c.v:''}<small>${fmtR(c.p)} · ${cyc(c)}${c.kmA} km</small></div>
+      <div class="btrack"><div class="bfill ${c.o==='N'?'nac':''}" style="width:${w}%"></div></div>
+      <div class="bval">${fmt(v)}</div></div>`;
+  }).join('');
+}
+
+/* =============== simulador =============== */
+['inKm','inTarifa','inGas','inKmL','inFlex'].forEach(id=>$('#'+id).addEventListener('input',renderSim));
+function renderSim(){
+  const km=+$('#inKm').value||0,tar=+$('#inTarifa').value||0,gas=+$('#inGas').value||0,
+        kml=+$('#inKmL').value||1,flexP=+$('#inFlex').value||0;
+  const flexPerKm=gas/kml;
+  const base=sel.length?sel.map(id=>CARS[id]):[...CARS].sort((a,b)=>b.score-a.score).slice(0,3);
+  $('#simResults').innerHTML=base.map(c=>{
+    const cons=(c.kwh&&c.kmA)?(c.kwh/c.kmA*100):15; // kWh/100km estimado
+    const evPerKm=cons/100*tar;
+    const econMes=km*(flexPerKm-evPerKm);
+    const dif=c.p-flexP;
+    const pay=econMes>0&&dif>0?dif/econMes:null;
+    const payTxt=dif<=0?'imediato (custa menos que o flex)':(pay?`${(pay/12).toFixed(1)} anos (${Math.ceil(pay)} meses)`:'—');
+    return`<div class="sim-card">
+      <h4>${name(c)} <span class="hint">· ${fmtR(c.p)}</span></h4>
+      <div class="sim-line"><span>Consumo estimado</span><span class="num">${cons.toFixed(1)} kWh/100 km</span></div>
+      <div class="sim-line"><span>Custo por km — elétrico vs gasolina</span><span class="num">R$ ${evPerKm.toFixed(3)} vs R$ ${flexPerKm.toFixed(3)}</span></div>
+      <div class="sim-line"><span>Economia em energia</span><span class="num pos">R$ ${econMes.toLocaleString('pt-BR',{maximumFractionDigits:0})}/mês · R$ ${(econMes*12).toLocaleString('pt-BR',{maximumFractionDigits:0})}/ano</span></div>
+      <div class="sim-line"><span>Diferença de preço p/ o flex de referência</span><span class="num ${dif<=0?'pos':'neg'}">${dif<=0?'-':'+'} ${fmtR(Math.abs(dif))}</span></div>
+      <div class="sim-line"><span>Payback só com combustível</span><span class="num">${payTxt}</span></div>
+    </div>`;
+  }).join('')+`<p class="hint" style="margin-top:4px">Estimativa simplificada: não inclui IPVA, seguro, revisões (geralmente menores no elétrico) nem depreciação. Consumo derivado de bateria ÷ autonomia.</p>`;
+}
+
+/* =============== boot =============== */
+renderFilters();renderCards();drawScatter();updateFloat();
+</script>
+</body>
+</html>
