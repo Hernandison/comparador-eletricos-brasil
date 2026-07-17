@@ -231,8 +231,8 @@ td .win{font-size:9px;vertical-align:2px;margin-left:3px}
 /* ---------- ranking ---------- */
 .rank-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .bars{display:flex;flex-direction:column;gap:9px}
-.brow{display:grid;grid-template-columns:minmax(120px,180px) 1fr 62px;gap:10px;align-items:center}
-.brow .nm{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brow{display:grid;grid-template-columns:minmax(150px,215px) 1fr 58px;gap:10px;align-items:center}
+.brow .nm{font-size:12.5px;font-weight:600;line-height:1.22}
 .brow .nm small{display:block;font-weight:400;color:var(--texto3);font-size:10.5px;font-family:var(--mono)}
 .btrack{height:16px;background:var(--painel);border:1px solid var(--linha);border-radius:6px;overflow:hidden}
 .bfill{height:100%;border-radius:5px;background:linear-gradient(90deg,rgba(122,104,212,.45),var(--carga))}
@@ -407,7 +407,7 @@ footer a:hover{text-decoration:underline}
       <h3>Quem escapa: produção nacional</h3>
       <p><strong class="mark-ok">BYD (Camaçari-BA)</strong> já produz o Dolphin Mini no país; o <strong class="mark-ok">Chevrolet Spark EUV</strong> é montado no Brasil; a GWM opera em Iracemápolis-SP. <strong class="mark-c">Geely</strong> anunciou produção do EX2 na fábrica da Renault em São José dos Pinhais-PR e a <strong class="mark-c">Leapmotor</strong> (Stellantis) confirmou nacionalização do B10 — quando isso se concretizar, esses modelos tendem a segurar ou baixar preço enquanto os 100% importados sobem. Para kits CKD/SKD montados aqui, a alíquota cheia só chega em jan/2027.</p>
       <h3>Como ler este dashboard</h3>
-      <p>Preços são de tabela ("a partir de"), coletados em julho/2026 — promoções mensais (como as da BYD) mudam rápido. A autonomia usa o <strong>ciclo Inmetro (PBEV)</strong> quando disponível; onde só há número divulgado pela marca (ciclos CLTC/WLTP, mais otimistas), aplicamos um <strong>ajuste de −22%</strong> para estimar o equivalente Inmetro e manter a comparação justa — esses valores aparecem com "≈/estim.". O <strong>score de custo-benefício</strong> pondera km por R$ 1.000 (45%), potência por R$ 1.000 (20%), autonomia absoluta (20%) e velocidade de recarga DC (15%), normalizados entre os modelos listados. Já o <strong class="mark-c">Score Geral</strong> (o selo colorido em cada card, 0–100) dá uma leitura mais completa do carro, ponderando autonomia (24%), conforto/suspensão (24%), custo-benefício (22%), recarga rápida (16%) e potência (14%).</p>
+      <p>Preços são de tabela ("a partir de"), coletados em julho/2026 — promoções mensais (como as da BYD) mudam rápido. A autonomia usa o <strong>ciclo Inmetro (PBEV)</strong> quando disponível; onde só há número divulgado pela marca (ciclos CLTC/WLTP, mais otimistas), aplicamos um <strong>ajuste de −22%</strong> para estimar o equivalente Inmetro e manter a comparação justa — esses valores aparecem com "≈/estim.". O <strong>score de custo-benefício</strong> pondera km por R$ 1.000 (45%), potência por R$ 1.000 (20%), autonomia absoluta (20%) e velocidade de recarga DC (15%), normalizados entre os modelos listados. Já o <strong class="mark-c">Score Geral</strong> (o selo colorido em cada card, 0–100) dá uma leitura equilibrada que <strong>também considera o preço</strong>: km por R$ 1.000 (34%), preço acessível (22%), conforto/suspensão (18%), autonomia (16%) e recarga rápida (10%) — assim um carro de R$ 1 milhão não lidera só por ter autonomia e potência absolutas altas.</p>
       <h3>Como lemos a suspensão (nota de conforto/rodagem 0–5 ★)</h3>
       <p>Cada modelo traz a arquitetura real de suspensão <strong>dianteira / traseira</strong> e uma nota de conforto de 0 a 5. A lógica: eixo traseiro <strong class="mark-c">independente (multibraços)</strong> filtra melhor buracos e mantém as rodas alinhadas em curva, tendendo a nota mais alta; <strong class="mark-warn">barra/eixo de torção</strong> (semi-independente) é mais simples e comum nos urbanos de entrada. A nota também considera o acerto conhecido de cada carro e o segmento. Um caso ilustrativo: o novo <strong>MG4 Urban</strong> troca o multibraços do MG4 tradicional por <strong>eixo de torção</strong> para liberar espaço e porta-malas (477 L) — por isso fica em 3,4, enquanto o MG4 "cheio" marca 4,2. <em>É uma orientação comparativa, não um teste instrumentado — faça o test-drive.</em></p>
       <h3>Dicas rápidas de comprador</h3>
@@ -448,9 +448,11 @@ const [kmrsL,kmrsH]=mm('kmrs'),[cvrsL,cvrsH]=mm('cvrs'),[autL,autH]=mm('kmA'),[d
 const nrm=(v,l,h)=>Math.max(0,Math.min(1,(v-l)/(h-l)));
 CARS.forEach(c=>{
   c.score=Math.round(100*(0.45*nrm(c.kmrs,kmrsL,kmrsH)+0.20*nrm(c.cvrs,cvrsL,cvrsH)+0.20*nrm(c.kmA,autL,autH)+0.15*nrm(c.dc??28,dcL,dcH)));
-  /* Score Geral (0–100): visão completa do carro, ponderando custo-benefício,
-     autonomia, potência, recarga rápida e conforto/suspensão */
-  c.overall=Math.round(100*(0.22*nrm(c.kmrs,kmrsL,kmrsH)+0.24*nrm(c.kmA,autL,autH)+0.14*nrm(c.cv,60,650)+0.16*nrm(c.dc??28,dcL,dcH)+0.24*nrm(c.susp,2.5,4.5)));
+  /* Score Geral (0–100): leitura equilibrada do carro, que TAMBÉM considera o preço.
+     km/R$1.000 (34%) + preço acessível (22%) + conforto/suspensão (18%)
+     + autonomia (16%) + recarga rápida (10%). Preço evita que carros de R$1 mi
+     liderem só por autonomia/potência absolutas. */
+  c.overall=Math.round(100*(0.34*nrm(c.kmrs,kmrsL,kmrsH)+0.22*(1-nrm(c.p,90000,700000))+0.18*nrm(c.susp,2.5,4.5)+0.16*nrm(c.kmA,autL,autH)+0.10*nrm(c.dc??28,dcL,dcH)));
 });
 const scoreH=Math.max(...CARS.map(c=>c.score));
 
@@ -525,7 +527,7 @@ function renderCB(){
         ${byBand.map(x=>mini(x.lbl,x.c)).join('')}
       </div>
     </div>
-    <p class="hint" style="margin-top:16px">Score CB = km por R$ 1.000 (45%) + potência por R$ 1.000 (20%) + autonomia (20%) + recarga DC (15%), normalizado entre os modelos. Diferente do Score Geral (que também inclui conforto/suspensão).</p>`;
+    <p class="hint" style="margin-top:16px">Score CB = km por R$ 1.000 (45%) + potência por R$ 1.000 (20%) + autonomia (20%) + recarga DC (15%), normalizado entre os modelos. Diferente do Score Geral (que também pondera preço acessível e conforto/suspensão).</p>`;
   area.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>toggleSel(+b.dataset.add)));
 }
 

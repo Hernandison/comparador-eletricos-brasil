@@ -6,8 +6,9 @@ Compara **~80 versões** (todos os trims à venda) de 40+ modelos com preço, au
 **Score Geral por carro** + score de custo-benefício, gráfico de mercado, comparador
 lado a lado (até 4 carros), ranking e **simulador de economia** elétrico × combustível.
 
-> **Score Geral (0–100)** — selo colorido em cada card: pondera autonomia (24%),
-> conforto/suspensão (24%), custo-benefício (22%), recarga rápida (16%) e potência (14%).
+> **Score Geral (0–100)** — selo colorido em cada card: pondera km por R$ 1.000 (34%),
+> preço acessível (22%), conforto/suspensão (18%), autonomia (16%) e recarga rápida (10%).
+> Inclui o preço de propósito, para carros de R$ 1 milhão não liderarem o custo-benefício.
 
 > Site 100% estático (HTML + CSS + JavaScript puro, **sem framework**). Roda abrindo o
 > arquivo no navegador e hospeda de graça no Vercel, Netlify, GitHub Pages, etc.
