@@ -1,5 +1,12 @@
 # ⚡ Elétricos no Brasil · Comparador 2026
 
+[![Licença: MIT](https://img.shields.io/badge/Licen%C3%A7a-MIT-2f9e91.svg)](LICENSE)
+[![PRs bem-vindos](https://img.shields.io/badge/PRs-bem--vindos-01a878.svg)](https://github.com/Hernandison/comparador-eletricos-brasil/pulls)
+[![Deploy Vercel](https://img.shields.io/badge/deploy-Vercel-000000.svg)](https://comparador-eletricos-brasil.vercel.app/)
+![Sem framework](https://img.shields.io/badge/stack-HTML%20%2B%20CSS%20%2B%20JS-e0862f.svg)
+
+🔗 **App ao vivo:** https://comparador-eletricos-brasil.vercel.app/
+
 Ferramenta gratuita para ajudar as pessoas a **escolher seu carro elétrico** no Brasil.
 Compara **~80 versões** (todos os trims à venda) de 40+ modelos com preço, autonomia
 (ciclo Inmetro), potência, recarga, porta-malas, **avaliação de suspensão/conforto**,
@@ -90,3 +97,31 @@ npx serve .          # ou: python -m http.server 3000
 
 Fontes citadas no rodapé da própria página. Valores sujeitos a alteração — não substitui
 cotação oficial da montadora.
+
+## 🤝 Contribuindo (open-source)
+
+Este projeto é **open-source** e contribuições são muito bem-vindas — principalmente
+**correções de preço/ficha** e **novos modelos/versões** que entrarem à venda no Brasil.
+
+**Adicionar ou corrigir um carro** (não precisa saber muito de código):
+1. Abra o arquivo [`cars.js`](cars.js) — é a fonte única de dados.
+2. Copie uma linha existente e ajuste os campos (`p` preço, `kwh`, `km`, `cv`, etc.).
+   - `ci`: `'i'` se a autonomia é do Inmetro, `'d'` se divulgada pela marca.
+   - `o`: `'N'` fabricado no Brasil, `'I'` importado.
+   - `susp`: nota 0–5 de conforto/rodagem; `sf`/`sr`: suspensão dianteira/traseira.
+3. Salve e abra o `index.html` para conferir. Tudo (scores, gráficos, ranking) se
+   recalcula sozinho.
+4. Abra um **Pull Request** descrevendo a fonte do dado (link da montadora/notícia).
+
+Encontrou um preço errado ou um modelo faltando? **Abra uma
+[issue](https://github.com/Hernandison/comparador-eletricos-brasil/issues)** — leva 1 minuto.
+
+Sugestões de features, correções de layout e melhorias de acessibilidade também são bem-vindas.
+
+## 📄 Licença
+
+Distribuído sob a licença **MIT** — veja [`LICENSE`](LICENSE). Você pode usar, copiar,
+modificar e distribuir livremente, inclusive comercialmente, mantendo o aviso de copyright.
+Os dados têm caráter informativo e não substituem a cotação oficial das montadoras.
+
+Feito por **[Hernandison](https://github.com/Hernandison)** · contribuições creditadas. 💙
