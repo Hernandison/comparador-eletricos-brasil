@@ -13,11 +13,19 @@ elétrico × combustível.
 
 ```
 .
-├── index.html                          # a aplicação (é o que o Vercel serve)
-├── comparador-eletricos-brasil-2026.html   # cópia original (mesmo conteúdo)
+├── index.html                          # UI + estilos + lógica (é o que o Vercel serve)
+├── cars.js                             # DADOS dos carros (fonte única de verdade)
+├── comparador-eletricos-brasil-2026.html   # cópia de index.html (mesmo app)
 ├── vercel.json                         # config do Vercel (headers + clean URLs)
 └── README.md
 ```
+
+> **Baixo acoplamento:** os dados dos 48 modelos ficam isolados em [`cars.js`](cars.js)
+> (`var CARS = [...]`), separados da apresentação/lógica em `index.html`, que os
+> consome via `<script src="cars.js">`. Para adicionar/editar um carro, mexa **só no
+> `cars.js`**. Optamos por um módulo `.js` em vez de `.json`+`fetch` para o site
+> continuar funcionando tanto no Vercel quanto abrindo o arquivo direto (duplo-clique),
+> sem precisar de servidor. Se um dia virar API, é trivial migrar para `cars.json`.
 
 ## 🚗 O que tem dentro
 
