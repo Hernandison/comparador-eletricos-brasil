@@ -186,6 +186,30 @@ select{background:var(--painel);color:var(--texto);border:1px solid var(--linha)
 .scorebadge.t-mid{background:var(--carga-dim);color:var(--carga)}
 .scorebadge.t-ok{background:var(--alerta-dim);color:var(--alerta)}
 .scorebadge.t-lo{background:#eef1f6;color:var(--texto2)}
+/* categoria custo-benefício */
+.pick-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:24px}
+@media(min-width:640px){.pick-grid{grid-template-columns:repeat(2,1fr)}}
+.pick{display:flex;align-items:center;gap:12px;background:var(--painel);border-radius:var(--r);padding:12px 14px;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s}
+.pick:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(45,55,72,.12)}
+.pick.selected{box-shadow:0 0 0 2px var(--carga),var(--shadow)}
+.pick-rank{flex:none;width:32px;text-align:center;font-size:20px;font-weight:800;font-family:var(--mono);color:var(--texto3)}
+.pick-rank.medal{font-size:23px}
+.pick-main{flex:1;min-width:0}
+.pick-name{font-weight:800;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pick-name .origin{font-size:9px;padding:2px 6px;margin-left:4px;vertical-align:1px}
+.pick-specs{font-size:11px;color:var(--texto2);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.pick .scorebadge{padding:4px 9px} .pick .scorebadge b{font-size:16px}
+.pick .addbtn{flex:none;padding:7px 12px}
+.cb-cols{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:760px){.cb-cols{grid-template-columns:repeat(2,1fr)}}
+.cb-h{font-size:14px;font-weight:800;margin-bottom:10px}
+.cb-row2{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--painel);border-radius:12px;padding:10px 12px;margin-bottom:8px;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s}
+.cb-row2:hover{transform:translateX(3px)}
+.cb-row2.selected{box-shadow:0 0 0 2px var(--carga),var(--shadow)}
+.cb-tag{flex:none;font-size:10.5px;font-family:var(--mono);color:var(--texto2);background:var(--painel2);border-radius:99px;padding:4px 10px;min-width:104px;text-align:center}
+.cb-nm{flex:1;min-width:0;font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cb-nm small{display:block;font-weight:500;color:var(--texto3);font-family:var(--mono);font-size:10.5px}
+.scorebadge.sm{padding:3px 10px} .scorebadge.sm b{font-size:15px} .scorebadge.sm span{display:none}
 
 /* ---------- comparador ---------- */
 .cmp-empty{border:1px dashed var(--linha);border-radius:var(--r);padding:26px 18px;text-align:center;color:var(--texto2);font-size:14px}
@@ -268,6 +292,7 @@ footer a:hover{text-decoration:underline}
     <button class="tab" role="tab" aria-selected="true" data-pane="catalogo"><span class="ic">🗂️</span> Catálogo <span class="cnt" id="cntModels"></span></button>
     <button class="tab" role="tab" aria-selected="false" data-pane="comparar"><span class="ic">⚖️</span> Comparar <span class="cnt" id="cntCmp">0</span></button>
     <button class="tab" role="tab" aria-selected="false" data-pane="ranking"><span class="ic">🏆</span> Ranking</button>
+    <button class="tab" role="tab" aria-selected="false" data-pane="cb"><span class="ic">💎</span> Custo-Benefício</button>
     <button class="tab" role="tab" aria-selected="false" data-pane="simulador"><span class="ic">🧮</span> Vale a pena?</button>
     <button class="tab" role="tab" aria-selected="false" data-pane="mercado"><span class="ic">📊</span> Mercado</button>
   </nav>
@@ -342,6 +367,13 @@ footer a:hover{text-decoration:underline}
     <p class="hint" style="margin-bottom:14px">Escolha a métrica. Barras verdes = fabricação nacional.</p>
     <div class="rank-tools" id="rankTools"></div>
     <div class="bars" id="rankBars"></div>
+  </section>
+
+  <!-- ================= CUSTO-BENEFÍCIO ================= -->
+  <section class="pane" id="pane-cb">
+    <h2 style="margin-bottom:4px">Melhores custo-benefício 💎</h2>
+    <p class="hint" style="margin-bottom:16px">Onde seu dinheiro rende mais: os campeões de score CB no geral, por segmento e por faixa de preço. Toque num carro para adicioná-lo ao comparador.</p>
+    <div id="cbArea"></div>
   </section>
 
   <!-- ================= SIMULADOR ================= -->
@@ -441,17 +473,60 @@ const PAL=['#2f9e91','#2152ff','#ed8936','#805ad5'];
 
 /* =============== tabs =============== */
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>showPane(t.dataset.pane)));
-const PANE_TITLES={catalogo:'Catálogo',comparar:'Comparar',ranking:'Ranking',simulador:'Vale a pena?',mercado:'Mercado'};
+const PANE_TITLES={catalogo:'Catálogo',comparar:'Comparar',ranking:'Ranking',cb:'Custo-Benefício',simulador:'Vale a pena?',mercado:'Mercado'};
 function showPane(p){
   document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.pane===p));
   document.querySelectorAll('.pane').forEach(s=>s.classList.toggle('on',s.id==='pane-'+p));
   const cr=document.getElementById('crumbNow');if(cr)cr.textContent=PANE_TITLES[p]||'';
   if(p==='comparar')renderCmp();
   if(p==='ranking')renderRank();
+  if(p==='cb')renderCB();
   if(p==='simulador')renderSim();
   updateFloat();
   const anchor=document.querySelector('.panes');
   if(anchor)window.scrollTo({top:anchor.offsetTop-72,behavior:'smooth'});
+}
+
+/* =============== custo-benefício (categoria) =============== */
+function renderCB(){
+  const area=$('#cbArea');
+  const byScore=[...CARS].sort((a,b)=>b.score-a.score);
+  const top=byScore.slice(0,8);
+  const medal=i=>i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
+  const pick=(c,i)=>`
+    <article class="pick ${sel.includes(c.id)?'selected':''}">
+      <div class="pick-rank ${i<3?'medal':''}">${medal(i)}</div>
+      <div class="pick-main">
+        <div class="pick-name">${name(c)} <span class="origin ${c.o==='N'?'nac':'imp'}">${c.o==='N'?'🇧🇷 BR':'IMP'}</span></div>
+        <div class="pick-specs">${fmtR(c.p)} · ${cyc(c)}${fmtK(c.kmA)} km · ${c.cv} cv · ${c.kmrs.toFixed(2)} km/R$1k</div>
+      </div>
+      <div class="scorebadge ${tier(c.score)}" title="Score custo-benefício"><b>${c.score}</b><span>CB</span></div>
+      <button class="addbtn ${sel.includes(c.id)?'in':''}" data-add="${c.id}">${sel.includes(c.id)?'✓':'+'}</button>
+    </article>`;
+  const cats=[...new Set(CARS.map(c=>c.cat))];
+  const byCat=cats.map(cat=>[...CARS].filter(c=>c.cat===cat).sort((a,b)=>b.score-a.score)[0]).sort((a,b)=>b.score-a.score);
+  const bands=[['Até R$ 130 mil',0,130000],['R$ 130–180 mil',130000,180000],['R$ 180–250 mil',180000,250000],['Acima de R$ 250 mil',250000,Infinity]];
+  const byBand=bands.map(([lbl,lo,hi])=>{const c=[...CARS].filter(x=>x.p>=lo&&x.p<hi).sort((a,b)=>b.score-a.score)[0];return c?{lbl,c}:null;}).filter(Boolean);
+  const mini=(label,c)=>`
+    <button class="cb-row2 ${sel.includes(c.id)?'selected':''}" data-add="${c.id}">
+      <span class="cb-tag">${label}</span>
+      <span class="cb-nm">${name(c)}<small>${fmtR(c.p)} · ${cyc(c)}${fmtK(c.kmA)} km</small></span>
+      <span class="scorebadge sm ${tier(c.score)}"><b>${c.score}</b></span>
+    </button>`;
+  area.innerHTML=`
+    <div class="pick-grid">${top.map(pick).join('')}</div>
+    <div class="cb-cols">
+      <div class="cb-col">
+        <h3 class="cb-h">🏅 Melhor por segmento</h3>
+        ${byCat.map(c=>mini(c.cat,c)).join('')}
+      </div>
+      <div class="cb-col">
+        <h3 class="cb-h">💰 Melhor por faixa de preço</h3>
+        ${byBand.map(x=>mini(x.lbl,x.c)).join('')}
+      </div>
+    </div>
+    <p class="hint" style="margin-top:16px">Score CB = km por R$ 1.000 (45%) + potência por R$ 1.000 (20%) + autonomia (20%) + recarga DC (15%), normalizado entre os modelos. Diferente do Score Geral (que também inclui conforto/suspensão).</p>`;
+  area.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>toggleSel(+b.dataset.add)));
 }
 
 /* =============== seleção p/ comparar =============== */
@@ -462,6 +537,7 @@ function toggleSel(id){
   $('#cntCmp').textContent=sel.length;
   renderCards();drawScatter();updateFloat();
   if($('#pane-comparar').classList.contains('on'))renderCmp();
+  if($('#pane-cb').classList.contains('on'))renderCB();
 }
 function updateFloat(){
   const onCmp=$('#pane-comparar').classList.contains('on');
