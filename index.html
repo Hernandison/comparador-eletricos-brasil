@@ -432,9 +432,12 @@ footer a:hover{text-decoration:underline}
 
   <!-- ================= RANKING ================= -->
   <section class="pane" id="pane-ranking">
-    <h2 style="margin-bottom:4px">Ranking de custo-benefício</h2>
-    <p class="hint" style="margin-bottom:14px">Escolha a métrica. Barras verdes = fabricação nacional.</p>
+    <h2 style="margin-bottom:4px">Ranking — quais valem a pena</h2>
+    <p class="hint" style="margin-bottom:12px">Combine métrica + faixa de preço + categoria. Barras verdes = fabricação nacional.</p>
     <div class="rank-tools" id="rankTools"></div>
+    <div class="rank-tools" id="rankBand"></div>
+    <div class="rank-tools" id="rankCat"></div>
+    <div class="count-note" id="rankNote" style="margin:2px 0 12px;font-family:var(--mono)"></div>
     <div class="bars" id="rankBars"></div>
   </section>
 
@@ -1011,11 +1014,19 @@ function drawRadar(cs){
 
 /* =============== ranking =============== */
 let rankMetric='score';
+let rankBand='T';
+let rankCat='T';
 const RM=[['overall','Score Geral'],['score','Score CB'],['kmrs','km por R$ 1.000'],['cvrs','cv por R$ 1.000'],['km','Autonomia'],['susp','Conforto susp.'],['preco','Menor preço']];
+const BANDS=[['T','Todos os preços'],['130','Até R$ 130 mil'],['160','Até R$ 160 mil'],['200','Até R$ 200 mil'],['300','Até R$ 300 mil']];
+const CAP={'130':130000,'160':160000,'200':200000,'300':300000};
 function renderRank(){
   $('#rankTools').innerHTML=RM.map(([k,l])=>`<button class="chip" aria-pressed="${rankMetric===k}" data-rk="${k}">${l}</button>`).join('');
   document.querySelectorAll('[data-rk]').forEach(b=>b.addEventListener('click',()=>{rankMetric=b.dataset.rk;renderRank();}));
-  let list=[...CARS];
+  $('#rankBand').innerHTML=BANDS.map(([k,l])=>`<button class="chip" aria-pressed="${rankBand===k}" data-rb="${k}">${l}</button>`).join('');
+  document.querySelectorAll('[data-rb]').forEach(b=>b.addEventListener('click',()=>{rankBand=b.dataset.rb;renderRank();}));
+  $('#rankCat').innerHTML=[['T','Todas as categorias'],...CATS.map(c=>[c,c])].map(([k,l])=>`<button class="chip" aria-pressed="${rankCat===k}" data-rc="${k}">${l}</button>`).join('');
+  document.querySelectorAll('[data-rc]').forEach(b=>b.addEventListener('click',()=>{rankCat=b.dataset.rc;renderRank();}));
+  let list=CARS.filter(c=>(rankBand==='T'||c.p<=CAP[rankBand])&&(rankCat==='T'||c.cat===rankCat));
   let get,fmt;
   if(rankMetric==='overall'){get=c=>c.overall;fmt=v=>v+' /100';}
   if(rankMetric==='score'){get=c=>c.score;fmt=v=>v+' /100';}
@@ -1025,13 +1036,16 @@ function renderRank(){
   if(rankMetric==='susp'){get=c=>c.susp;fmt=v=>stars(v)+' '+v.toFixed(1);}
   if(rankMetric==='preco'){get=c=>c.p;fmt=v=>fmtR(v);}
   list.sort((a,b)=>rankMetric==='preco'?get(a)-get(b):get(b)-get(a));
-  list=list.slice(0,15);
+  const note=$('#rankNote');
+  if(!list.length){note.textContent='Nenhum modelo nessa combinação.';$('#rankBars').innerHTML='';return;}
+  note.textContent=list.length+' modelo(s)'+(rankBand!=='T'?' até R$ '+(CAP[rankBand]/1000)+' mil':'')+(rankCat!=='T'?' · '+rankCat:'')+(rankMetric==='preco'?' · do mais barato':' · melhores primeiro');
+  list=list.slice(0,20);
   const max=Math.max(...list.map(get)),min=Math.min(...list.map(get));
   $('#rankBars').innerHTML=list.map((c,i)=>{
     const v=get(c);
     const w=rankMetric==='preco'?(min/v*100):(v/max*100);
     return`<div class="brow">
-      <div class="nm">${i+1}. ${c.b} ${c.m}${c.v?' '+c.v:''}<small>${fmtR(c.p)} · ${cyc(c)}${c.kmA} km</small></div>
+      <div class="nm">${i+1}. ${c.b} ${c.m}${c.v?' '+c.v:''}<small>${fmtR(c.p)} · ${cyc(c)}${c.kmA} km · ${c.cat}</small></div>
       <div class="btrack"><div class="bfill ${c.o==='N'?'nac':''}" style="width:${w}%"></div></div>
       <div class="bval">${fmt(v)}</div></div>`;
   }).join('');
