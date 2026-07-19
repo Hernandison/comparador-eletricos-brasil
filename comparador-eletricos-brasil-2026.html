@@ -687,6 +687,11 @@ function openProfile(id){
         <div class="mg"><div class="k">ADAS</div><div class="v" style="font-size:12.5px">${c.adas}</div></div>
         <div class="mg"><div class="k">Teto solar</div><div class="v" style="font-size:12.5px">${c.teto&&c.teto!=="—"?c.teto:"—"}</div></div>
       </div>${c.tec&&c.tec.length?`<div class="mtec">${c.tec.map(t=>`<span class="tag">${t}</span>`).join("")}</div>`:""}</div>
+      <div class="msec"><h3>🛋️ Interior & conectividade</h3><div class="mgrid">
+        <div class="mg"><div class="k">Bancos</div><div class="v" style="font-size:12.5px">${c.couro||"—"}</div></div>
+        <div class="mg"><div class="k">Acabamento</div><div class="v">${c.acab?`<span style="color:var(--alerta)">${stars(c.acab)}</span> ${c.acab.toFixed(1)}`:"—"}</div></div>
+        <div class="mg"><div class="k">CarPlay / Android Auto</div><div class="v" style="font-size:12.5px">${c.cp==="Não"?"❌ Não tem":(c.cp||"—")}</div></div>
+      </div></div>
       <div class="msec"><h3>📄 Garantia de fábrica</h3><div class="mgrid">
         <div class="mg"><div class="k">Veículo</div><div class="v" style="font-size:12.5px">${g[0]}</div></div>
         <div class="mg"><div class="k">Bateria</div><div class="v" style="font-size:12.5px">${g[1]}</div></div>
@@ -718,7 +723,7 @@ let fEquip=new Set();     // filtros de equipamento
 let sortBy='preco';
 const $=q=>document.querySelector(q);
 const CATS=[...new Set(CARS.map(c=>c.cat))];
-const EQF=[['adas2','ADAS Nível 2'],['teto','Teto solar'],['v2l','V2L'],['air6','6+ airbags']];
+const EQF=[['adas2','ADAS Nível 2'],['teto','Teto solar'],['v2l','V2L'],['air6','6+ airbags'],['carplay','Apple CarPlay'],['couro','Bancos de couro']];
 const PAL=['#2f9e91','#2152ff','#ed8936','#805ad5'];
 
 /* =============== tabs =============== */
@@ -880,6 +885,8 @@ function eqOK(c){
   if(fEquip.has('teto')&&!(c.teto&&c.teto!=='—'))return false;
   if(fEquip.has('v2l')&&!(c.tec&&c.tec.includes('V2L')))return false;
   if(fEquip.has('air6')&&!(c.air>=6))return false;
+  if(fEquip.has('carplay')&&c.cp==='Não')return false;
+  if(fEquip.has('couro')&&!(c.couro&&c.couro.includes('Couro')))return false;
   return true;
 }
 function visible(){
@@ -955,6 +962,9 @@ function renderCmp(){
     ['ADAS',c=>({'—':0,'Básico':1,'Nível 1':2,'Nível 2':3}[c.adas]||0),c=>c.adas||'—','max'],
     ['Teto solar',null,c=>(c.teto&&c.teto!=='—')?c.teto:'—',null],
     ['Tecnologias',null,c=>(c.tec&&c.tec.length)?c.tec.join(' · '):'—',null],
+    ['Bancos',null,c=>c.couro||'—',null],
+    ['Acabamento',c=>c.acab,c=>c.acab?stars(c.acab)+' '+c.acab.toFixed(1):'—','max'],
+    ['CarPlay / Android Auto',null,c=>c.cp==='Não'?'❌ Não tem':(c.cp?'✓ '+c.cp:'—'),null],
     ['Origem',null,c=>c.o==='N'?'🇧🇷 Nacional':'Importado',null],
     ['Score Geral',c=>c.overall,c=>c.overall+' / 100','max'],
     ['Score custo-benefício',c=>c.score,c=>c.score+' / 100','max'],
